@@ -1,0 +1,157 @@
+.global_search {display:flex; gap: 0.5rem;align-items: baseline;}
+
+      .form-text{flex:max-content}
+
+      .advanced-search {
+          display: inline-block;
+          padding-left: 1.5rem;}
+      .global_search input {margin-bottom:0}
+      .global_search .form-text {height: 2rem;}
+      div.search_container {
+          background-color: #ffffff;
+          border: 1px solid #cccccc;
+          height: 2rem;
+          padding-top: 4px;
+          padding-bottom: 4px;
+          margin-bottom: 9px;
+          -webkit-border-radius: 0;
+      }
+      .search_container {
+          width: 100%;
+          display: flex;
+          gap: 0.5rem;
+          align-items: baseline;
+          display:flex; gap: 0.5rem;align-items: anchor-center;
+      }
+
+      .search_container .keyboardInput {
+          border:none;
+          height:calc(2rem - 8px);
+          flex:max-content;
+      }
+      img.keyboardInputInitiator { opacity: 0.5; height: calc(2rem - 8px); max-height: calc(2rem - 8px)}
+      #keyboardInputMaster * {
+          font-size: 0.9rem !important;
+      }
+
+
+
+
+.individual-item h1 {
+    /* font-size: 28px; */
+}
+.individual-item h2 {
+    font-size: 24px;
+}
+.individual-item h3 {
+    font-size: 20px;
+}
+
+.individual-item .bold, .individual-item .tei-label, .individual-item .label, .individual-item h5, .individual-item h4, .individual-item h3, .individual-item h2 {
+    font-weight: 700;
+}
+
+.individual-item .tei-italic,
+.individual-item .italic {
+    font-style: italic;
+}
+.individual-item .layoutDesc {
+    margin: 10px 0;
+}
+.individual-item .tei-label {
+    height: 18px;
+}
+.individual-item .nestedmsItem {
+    margin-left: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 1rem;
+}
+.individual-item .msItem,
+.individual-item .msPart {
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+.individual-item .secFol .italic {
+    font-style: normal;
+}
+.individual-item .support,
+.individual-item .form,
+.individual-item .extent,
+.individual-item .dimensions,
+.individual-item .foliation,
+.individual-item .condition {
+    margin-top: 5px;
+}
+.individual-item p.note:last-of-type {
+    margin: 0;
+}
+.individual-item .additional ul.listBibl {
+    padding: 0;
+}
+.individual-item .small-caps,
+.individual-item .author,
+.individual-item .translator {
+    font-variant: small-caps;
+}
+.individual-item p,
+.individual-item .seg,
+.individual-item .item,
+.individual-item .head,
+.individual-item .physDesc-p,
+.individual-item .tei-title,
+.individual-item .locus,
+.individual-item .note,
+.individual-item .decoNote-list,
+.individual-item .decoNote,
+.individual-item .item-number {
+    margin: 0 0 5px;
+}
+.individual-item .incipit,
+.individual-item .explicit,
+.individual-item .rubric,
+.individual-item .finalRubric,
+.individual-item .textLang,
+.individual-item .origPlace,
+.individual-item .secFol,
+.individual-item .objectDesc,
+.individual-item .additional,
+.individual-item .colophon,
+.individual-item .origin,
+.individual-item .msName,
+.individual-item .author,
+.individual-item .bibl,
+.individual-item .orgName,
+.individual-item #zotero-bibliography-text,
+.individual-item .origDate,
+.individual-item .origPlace,
+.individual-item .additions,
+.individual-item .coveragewarning {
+    margin-bottom: 5px;
+}
+.individual-item .content.tei-body {margin-top:25px}
+.individual-item h4 {font-size:1.15rem;margin-bottom: 0.75rem;}
+.individual-item {line-height:1.5}
+.individual-item p {margin: 0 0 10px 0;}
+.individual-item span.seg {display:block; margin-top: 1rem;}
+.individual-item li, .individual-item ul>span.biblStruct {display:list-item;line-height: 1.5; margin-bottom:0.5rem;}
+.individual-item sup, .individual-item .super {font-size: 0.8rem; position:initial; vertical-align:super; line-height:inherit; }
+.individual-item .note {display:block;}
+
+.individual-item .smallcaps {font-variant: smallCaps}
+.individual-item .roman {font-style: normal !important}
+.individual-item .underline {text-decoration:underline}
+.individual-item .overline {text-decoration:overline}
+.individual-item .strikethrough {text-decoration:line-through}
+
+.layoutDesc p + p {
+    margin-top: 1.5rem;
+}
+
+.individual-item p:last-child {
+    margin-bottom: 0.625rem;
+}
+
+.layoutDesc span.note, .layoutDesc span.seg {display:block;margin-top:0; margin-bottom:0}
+
