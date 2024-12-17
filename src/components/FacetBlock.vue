@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import FacetItem from '../components/FacetItem.vue'
-import { useRoute, stringifyQuery } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { computed, ref } from 'vue'
 
 const route = useRoute()
@@ -66,8 +66,6 @@ const expand_link = computed(() => {
     <div class="facetName">
       {{ name }}
       <div class="facetMore" v-if="is_expandible">
-        <!-- Need to add a check onto this to only display if more is avail.
-             Easiest solution is to take 6 items from each facet but only display 5-->
         <i v-if="target_facets.length >= 5">
           <router-link :to="{ name: 'search', query: unexpand_link}" v-if="is_expanded">less <span>-</span></router-link>
           <router-link :to="{ name: 'search', query: expand_link}" v-else>more <span>+</span></router-link>

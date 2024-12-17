@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useRoute, parseQuery, stringifyQuery } from 'vue-router'
+import { useRoute } from 'vue-router'
 const route = useRoute()
 
 const props = defineProps({

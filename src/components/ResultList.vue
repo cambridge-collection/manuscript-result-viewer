@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, ref, onMounted, computed, onBeforeMount } from 'vue'
+import { inject, ref, computed, onBeforeMount } from 'vue'
 import { useRouter, useRoute, stringifyQuery } from 'vue-router'
 import ResultItem from '@/components/ResultItem.vue'
 import FacetBlock from '@/components/FacetBlock.vue'
@@ -288,29 +288,7 @@ const advanced_query_string = computed(() => {
       params[p] = q_params_tidied.value[p]
     }
   })
-  // The following code likely isn't needed for advanced searches
-  /*
-  if ('f1-date' in q_params_tidied.value && q_params_tidied.value['f1-date']) {
-    const var_names: Array<string> = ['year', 'month', 'day']
-    const date_pieces: Record<string, unknown> = {
-      year: [],
-      month: [],
-      day: [],
-    }
-    const year: Array<string> = []
-    const month: Array<string> = []
-    const day: Array<string> = []
-    q_params_tidied.value['f1-date'].forEach((d: string) => {
-      const parts: Array<string> = d.split('::')
-      for (const i in parts) {
-        date_pieces[var_names[i]] = parts[i]
-      }
-    })
-    for (const [key, value] of Object.entries(date_pieces)) {
-      const vals = new Set([date_pieces[key]].flat(Infinity))
-      params[key] = [...vals][0]
-    }
-  }*/
+
   return stringifyQuery(params)
 })
 
@@ -430,11 +408,9 @@ async function fetchData(start: number) {
 onBeforeMount(async () => {
   //console.log('Before')
   window.scrollTo(0, 0)
-  //setTimeout(async () => {
   await fetchData(currentPage.value).then(() => {
     is_loading.value = false
   })
-  //  }, 3000)
 })
 </script>
 
