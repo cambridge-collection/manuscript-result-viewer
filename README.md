@@ -15,6 +15,13 @@ If testing on locally indexed data, run [darwin-solr](https://github.com/cambrid
 
 If testing against the live data, set `apiURL` to `https://search.darwinproject.ac.uk/`.
 
+To run the component locally:
+
+1. Install all dependencies using `npm install`
+2. Run `npm run dev`
+3. Go to <https://localhost:5173/search>. This will return the first page of all items.
+4. Enter something into the search field and click search.
+
 ## Building for Deployment
 
 The deployment is currently manual.
