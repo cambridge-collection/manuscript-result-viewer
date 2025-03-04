@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'node:url'
-import del from "rollup-plugin-delete";
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -25,11 +24,7 @@ export default defineConfig({
         //dir: 'assets/cdcp-searchResults',
         entryFileNames: 'assets/cdcp-searchResults/search.js',
         assetFileNames: 'assets/cdcp-searchResults/search.css',
-      },
-      //external: ['/config/settings.ts'],
-      plugins: [
-        del({ targets: ["dist/sites*/**", "dist/modules*/**", "dist/misc*/**", "dist/favicon.ico"], hook: "generateBundle" })
-      ]
+      }
     }
   }
 })

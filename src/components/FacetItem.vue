@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import escape from 'core-js/actual/regexp/escape'
 const route = useRoute()
 
 const props = defineProps({
@@ -11,6 +12,7 @@ const props = defineProps({
   q_params_tidied: { type: Object, required: true },
   is_subgroup: { type: Boolean, required: true },
   router: { type: Object, required: true },
+  show: {type: Boolean, required: true},
 })
 
 const params = computed(() => {
@@ -26,14 +28,12 @@ const mapped_param_name = computed(() => {
 })
 
 function is_selected(value: string) {
-  const name_root = mapped_param_name.value.replace(/^f\d+-/, '')
-  const facetRegex = new RegExp('^f\\d+-'+ name_root, 'g')
-  const keys: Array<string> = Object.keys(params['value']).filter((i) => (i == mapped_param_name.value || facetRegex.test(i)) )
+  const keys: Array<string> = Object.keys(params['value']).filter((i) => (i == mapped_param_name.value)) //|| facetRegex.test(i)) )
   return  keys.some((key: string) => {
     return (params['value'][key]['details'].some(
       (e: any) => {
         const para_val: string = String(e.value).replaceAll(/^"(.+?)"$/g, '$1')
-        const re = new RegExp("^"+ value +'::')
+        const re = new RegExp("^"+ escape(value) +'::')
 
         return para_val == value || re.test(para_val)
       }
@@ -123,13 +123,9 @@ const cancel_link = computed(() => {
 
   // Remove object for key 'p' from param list
   const qpt: Record<string, unknown> = props.q_params_tidied
-  const ps_tidied = Object.fromEntries(
-    Object.entries(qpt).filter(([k, v]) => k !== p)
-  )
-  const current_param: any = {}
   const qs: Record<string, Array<string>> = {}
   if (Object.keys(qpt).length == 0) {
-    qs['keyword']= [] // Should be browse-all=yes
+    qs['keyword']= []
   } else {
     for (const key in qpt) {
       qs[key] = []
@@ -175,7 +171,7 @@ function remove_vals(
   let matches = key == selected_key && val == selected_value
   if (/^f\d+-date$/.test(selected_key)) {
     const tidied_val = selected_value.replaceAll(/^"(.+?)"$/g, '$1')
-    const val_pattern = new RegExp('^' + tidied_val + '::')
+    const val_pattern = new RegExp('^' + escape(tidied_val) + '::')
     matches =
       val == selected_value ||
       val_pattern.test(val.replaceAll(/^"(.+?)"$/g, '$1'))
@@ -185,11 +181,11 @@ function remove_vals(
 </script>
 
 <template>
-  <tr>
+  <tr v-show="show">
     <td class="col2">
       <span v-if="is_selected(props.facet.val)">{{ name }}</span>
       <router-link :to="{ name: 'search', query: url_reset_page }" v-else>
-        {{ name }}
+        {{  name }}
       </router-link>
     </td>
     <td class="col3">
@@ -197,7 +193,7 @@ function remove_vals(
         :to="{ name: 'search', query: cancel_link }"
         v-if="is_selected(props.facet.val)"
       >
-        <span class="material-icons">disabled_by_default</span>
+        <span class="material-icons">close</span>
       </router-link>
       <span v-else>({{ props.facet.count }})</span>
     </td>
@@ -216,6 +212,7 @@ function remove_vals(
               :param_name="subgroupName"
               :query_params="query_params"
               :subfacets="subfacets"
+              :show="show"
               v-bind:is_subgroup="true"
               v-bind:router="router"
               v-bind:q_params_tidied="props.q_params_tidied"
@@ -229,45 +226,40 @@ function remove_vals(
 </template>
 
 <style scoped>
-.dcpNew .facet table tr:nth-child(2n) {
-  background-color: rgba(255, 255, 255, 0.8);
-}
 
-.dcpNew .facet table td {
+.facet table td {
   background-color: transparent;
-}
-
-.dcpNew .facet table td.col2 {
-  padding-left: 5px;
-}
-
-.dcpNew .facet table td.col3 {
-  text-align: right;
-  padding-right: 5px;
-}
-
-.dcpNew .facet table td a {
-  color: #506436;
-}
-
-.dcpNew .facet .material-icons {
   font-size: 1rem;
-  vertical-align: bottom;
+  line-height:1.4
 }
 
-.dcpNew .facet tbody {
+.facet table td.col3 {
+  text-align: right;
+}
+
+.facet table td a, .facet table td {
+  color: #FFF;
+}
+
+.facet .material-icons {
+  font-size: 1.15rem;
+  font-weight:900;
+  vertical-align: baseline;
+}
+
+.facet tbody {
   border-top: none !important;
 }
 
-.dcpNew .facet table {
+.facet table {
   border: none !important;
   border-collapse: collapse;
 }
-.dcpNew .facet .facetGroup .facetSubGroup table {
+.facet .facetGroup .facetSubGroup table {
   width: 100%;
   border-top: none;
 }
-.dcpNew .facet .facetGroup .facetSubGroup {
+.facet .facetGroup .facetSubGroup {
   padding-left: 1em;
 }
 </style>

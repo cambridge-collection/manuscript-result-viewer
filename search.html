@@ -1,582 +1,225 @@
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" class="no-js">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js"
-          data-cfasync="false"></script>
-  <script>
-    window.addEventListener('load', function() {
-      window.cookieconsent.initialise({
-        revokeBtn: '<div class=\'cc-revoke\'></div>',
-        type: 'opt-in',
-        theme: 'classic',
-        palette: {
-          popup: {
-            background: '#000',
-            text: '#fff'
-          },
-          button: {
-            background: '#fd0',
-            text: '#000'
-          }
-        },
-        content: {
-          link: 'Сookie policy',
-          href: 'https://www.darwinproject.ac.uk/about/privacy-policy'
-        },
-        onInitialise: function(status) {
-          if (status == cookieconsent.status.allow) darwinCookieScripts()
-        },
-        onStatusChange: function(status) {
-          if (this.hasConsented()) darwinCookieScripts()
-        }
-      })
-    })
-
-    function darwinCookieScripts() {
-      /* Google Tag Manager */
-      (function(w, d, s, l, i) {
-        w[l] = w[l] || []
-        w[l].push({
-          'gtm.start':
-            new Date().getTime(), event: 'gtm.js'
-        })
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''
-        j.async = true
-        j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl
-        f.parentNode.insertBefore(j, f)
-      })(window, document, 'script', 'dataLayer', 'GTM-WLMRHJJ');
-      /* End Google Tag Manager */
-      /* facebook */
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0]
-        if (d.getElementById(id)) return
-        js = d.createElement(s)
-        js.id = id
-        js.src = '//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.5&appId=1735181336713570'
-        fjs.parentNode.insertBefore(js, fjs)
-      }(document, 'script', 'facebook-jssdk'))
-      /* end facebook */
-    } // end darwinCookieScripts
-  </script>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="apple-touch-icon"
-        href="/sites/all/themes/drupal-cambridge-theme-master/apple-touch-icon.png"
-        type="image/png">
-  <link rel="shortcut icon"
-        href="/sites/all/themes/drupal-cambridge-theme-master/favicon.ico"
-        type="image/vnd.microsoft.icon">
-  <script type="application/ld+json">
-
-    {
-      "@context": "http:\/\/schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "item": {
-            "@id": "https:\/\/www.darwinproject.ac.uk\/",
-            "name": "Darwin Correspondence Project",
-            "image": "https:\/\/www.darwinproject.ac.uk\/sites\/default\/files\/charles-darwin_with_signature.jpg"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "item": {
-            "@id": "https:\/\/www.darwinproject.ac.uk\/search",
-            "name": "Search",
-            "image": "https:\/\/www.darwinproject.ac.uk\/sites\/default\/files\/charles-darwin_with_signature.jpg"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "item": {
-            "@id": "https:\/\/www.darwinproject.ac.uk\/search",
-            "name": "Contact",
-            "image": "https:\/\/www.darwinproject.ac.uk\/sites\/default\/files\/charles-darwin_with_signature.jpg"
-          }
-        }
-      ]
-    }
-
-  </script>
-  <meta  name="description"
-        content="Found a new letter? Think we've made a mistake? Have a question? We'd like to hear from you. Email the Darwin Correspondence Project Team or write to us at: Darwin Correspondence Project Cambridge University Library West Road Cambridge CB3 9DR UK Telephone: +44 (0)1223 333008 We are a small, busy research project, so if you are writing with a query, please be patient. We'll">
-  <meta  name="generator" content="Drupal 7 (https://www.drupal.org)">
-  <link  rel="canonical"
-        href="https://www.darwinproject.ac.uk/search">
-  <meta  property="og:site_name" content="Darwin Correspondence Project">
-  <meta  property="og:type" content="article">
-  <meta  property="og:url"
-        content="https://www.darwinproject.ac.uk/search">
-  <meta  property="og:title" content="Contact">
-  <meta  property="og:description"
-        content="Found a new letter? Think we've made a mistake? Have a question? We'd like to hear from you. Email the Darwin Correspondence Project Team or write to us at: Darwin Correspondence Project Cambridge University Library West Road Cambridge CB3 9DR UK Telephone: +44 (0)1223 333008 We are a small, busy research project, so if you are writing with a query, please be patient. We'll try to respond within a few days.">
-  <meta  property="og:updated_time" content="2017-12-11T12:16:02+00:00">
-  <meta  name="twitter:card" content="summary">
-  <meta  name="twitter:url"
-        content="https://www.darwinproject.ac.uk/search">
-  <meta  name="twitter:title" content="Contact">
-  <meta  property="article:published_time"
-        content="2015-05-03T16:39:32+01:00">
-  <meta  property="article:modified_time"
-        content="2015-05-03T16:39:32+01:00">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact | Darwin Correspondence Project</title>
-  <style type="text/css" media="all">
-      @import url("/modules/system/system.base.css?s7csui");
-      @import url("/modules/system/system.menus.css?s7csui");
-      @import url("/modules/system/system.messages.css?s7csui");
-      @import url("/modules/system/system.theme.css?s7csui");
-  </style>
-  <style type="text/css" media="all">
-      @import url("/sites/all/modules/drupal-feature-teasers-master/css/teasers.css?s7csui");
-      @import url("/modules/comment/comment.css");
-      @import url("/sites/all/modules/cudl/cudl.css?s7csui");
-      @import url("/sites/all/modules/cudl_album/css/cudl_album.css?s7csui");
-      @import url("/sites/all/modules/darwin_emotion/darwin_emotion.css?s7csui");
-      @import url("/sites/all/modules/darwin_kids_timeline/darwin_kids_timeline.css?s7csui");
-      @import url("/sites/all/modules/darwin_search/darwin_search.css");
-      @import url("/modules/field/theme/field.css?s7csui");
-      @import url("/sites/all/modules/learning_resources/css/learning_resources.css?s7csui");
-      @import url("/modules/node/node.css?s7csui");
-      @import url("/modules/search/search.css?s7csui");
-      @import url("/modules/user/user.css?s7csui");
-      @import url("/sites/all/modules/views/css/views.css?s7csui");
-      @import url("/sites/all/modules/ckeditor/css/ckeditor.css?s7csui");
-  </style>
-  <style type="text/css" media="all">
-      @import url("/sites/all/modules/ctools/css/ctools.css?s7csui");
-      @import url("/misc/ui/jquery.ui.core.css?s7csui");
-      @import url("/misc/ui/jquery.ui.theme.css?s7csui");
-      @import url("/misc/ui/jquery.ui.autocomplete.css?s7csui");
-      @import url("/misc/ui/jquery.ui.progressbar.css?s7csui");
-      @import url("/sites/all/modules/panels/css/panels.css?s7csui");
-      @import url("/sites/all/modules/darwin_sharing/sharing.css?s7csui");
-  </style>
-  <style type="text/css" media="all">
-      @import url("/sites/all/themes/drupal-cambridge-theme-master/css/full-stylesheet.css?s7csui");
-      @import url("/sites/all/themes/drupal-cambridge-theme-master/css/drupal.css?s7csui");
-  </style>
-  <style type="text/css" media="all">
-      @import url("/sites/default/files/cpn/block-56.css?s7csui");
-  </style>
-  <style type="text/css" media="all"><!-- /*-->/*><!--*/
-  .not-front.page-node-590 .field-name-field-bibliography .field-label {
-      display: none;
-  }
-
-  .not-front.page-node-590 .page-node #page-content .field-name-field-image .content, .not-front.page-node-590 #file-934 .content img {
-      display: none !important;
-  }
-
-  .not-front.page-node-590 .remodal-close {
-      display: none;
-  }
-
-  body.not-front.page-node-590 .remodal {
-      padding: 0.5em !important;
-      background-color: #000;
-      box-shadow: #FFF 0 0 15px;
-  }
-
-  .not-front.page-node-590 .remodal {
-      max-width: 1177px !important;
-      max-height: 1177px !important;
-      height: 95vh;
-  }
-
-  .not-front.page-node-590 .remodal iframe {
-      height: 100% !important;
-  }
-
-  .not-front.page-node-590 #darwindaytable tr td:first-child {
-      font-weight: bold;
-      text-align: right;
-  }
-
-  .not-front.page-node-590 #darwindaytable tr:nth-child(odd) td {
-      background-color: #f7f5f0 !important;
-  }
-
-  .not-front.page-node-590 .field-name-body .hotspot-promos {
-      overflow: auto;
-      background-color: #4b701c !important;
-      color: #FFF !important;
-  }
-
-  .not-front.page-node-590 .hotspot-promo {
-      width: 45%;
-      float: left;
-      color: #FFF !important;
-  }
-
-  .not-front.page-node-590 .hotspot-promo h3 {
-      color: #FFF !important;
-      margin: 0.5rem 0 0.25rem 0 !important;
-      font-size: 1.1rem;
-  }
-
-  .not-front.page-node-590 .hotspot-promo span {
-      color: #FFF !important;
-      padding-top: 0.5rem !important;
-      display: block;
-  }
-
-  .not-front.page-node-590 .hotspot-promo a {
-      color: #FFF !important;
-  }
-
-  .not-front.page-node-590 .hotspot-promo a:hover img:after {
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-      content: '\2192';
-      font-size: 4rem;
-      color: #FFF;
-  }
-
-  .not-front.page-node-590 .hotspot-promo img {
-      max-width: 100%;
-      position: relative;
-  }
-
-  .not-front.page-node-590 .hotspot-promo:first-child {
-      margin-right: 5%;
-      margin-left: 2.5%;
-  }
-
-  @media screen and (max-width: 800px) {
-      .not-front.page-node-590 .hotspot-promo {
-          width: 95%;
-          float: none;
-      }
-
-      .not-front.page-node-590 .hotspot-promo:last-child {
-          margin-left: 2.5%;
-      }
-
-      .not-front.page-node-590 .hotspot-promo:last-child h3 {
-          border-top: 2px solid #FFF;
-          padding-top: 0.6rem;
-      }
-  }
-
-  .page-node-617 #node-617 .hotspot-promos {
-      background-color: #4b701c !important;
-      color: #FFF !important;
-  }
-
-  .page-node-617 #node-617 .hotspot-promos h3, .page-node-617 #node-617 .hotspot-promos a {
-      color: #FFF;
-  }
-
-  .page-node-617 #node-617 .hotspot-promos h3 {
-      padding-top: 1rem;
-      padding-left: 0.5rem;
-  }
-
-  .page-node-617 #node-617 #file-1015 img {
-      display: none !important;
-  }
-
-  #readanother {
-      color: #FFF;
-      width: 200px;
-      font-weight: bold;
-      background-color: #4B701C;
-      margin: 1rem auto;
-      padding: 1rem;
-      font-size: 1.15rem;
-      text-align: center;
-      position: relative;
-      top: 3rem;
-      cursor: pointer;
-  }
-
-  #readanother:hover {
-      background-colour: #000;
-  }
-
-  p {
-      font-family: verdana, arial, sans-serif;
-  }
-
-  .field-name-field-related-pages-intro {
-      font-weight: bold;
-      font-size: 120%;
-  }
-
-  .front #breadcrumb {
-      display: none
-  }
-
-  #block-cudl-related-letters .letter i, #block-cudl-related-letters .letter .doubleUnderline {
-      padding-right: 0.3em;
-      padding-left: 0.3em;
-  }
-
-  .campl-pagination li > span {
-      padding: 5px 7px;
-      line-height: 12px;
-      text-decoration: none;
-      float: left;
-      margin: 0 2px;
-  }
-
-  #cudl_content_container table, #cudl_content_container .table {
-      padding: 0 0.25em;
-      display: table;
-      margin-left: auto;
-      margin-right: auto;
-  }
-
-  #cudl_content_container ul, #cudl_content_container .ul, #cudl_content_container ul.simple, #cudl_content_container .ul.simple {
-      list-style: none;
-      margin-top: 1em;
-      margin-bottom: 1em;
-  }
-
-  #cudl_content_container ul.bulleted, #cudl_content_container .ul.bulleted {
-      list-style: disc;
-  }
-
-  #cudl_content_container .inline.figure {
-      display: inline-block !important;
-  }
-
-  .campl-local-navigation-container > ul ul ul {
-      display: none;
-  }
-
-  /**/
-  --></style>
-  <script type="text/javascript" src="//use.typekit.net/afi5qbj.js"></script>
-  <script type="text/javascript" async
-          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-  <script type="text/javascript">try {
-    Typekit.load()
-  } catch (e) {
-  }</script>
-  <script type="text/javascript">document.documentElement.className += ' js'</script>
-  <link href="/sites/all/themes/custom_css/fonts.css" rel="stylesheet">
-  <link href="/sites/all/themes/custom_css/darwin.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="/sites/all/themes/custom_js/remodal/remodal.css" rel="stylesheet">
-  <link href="/sites/all/themes/custom_js/remodal/remodal-default-theme.css"
-        rel="stylesheet">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>Medieval Manuscripts Catalogue</title>
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="stylesheet" href="/src/stylesheets/full-stylesheet.css" />
+  <link rel="stylesheet" href="/src/stylesheets/styleguide.css" />
+  <link rel="stylesheet" href="/src/stylesheets/mscat.css" />
+  <!--<script type="text/javascript" src="//use.typekit.com/hyb5bko.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+<script type="text/javascript">  document.documentElement.className += " js";</script>-->
 </head>
-<body
-  class="html not-front not-logged-in no-sidebars page-node page-node- page-node-8 node-type-page campl-theme-4 SI-about SI-who-we-were">
-<noscript>
-  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WLMRHJJ" height="0" width="0"
-          style="display:none;visibility:hidden"></iframe>
-</noscript>
-<div id="fb-root"></div>
-<a href="#page-content" class="campl-skipTo">skip to content</a>
+<body id="bb" class="campl-theme-1">
 <div class="campl-row campl-global-header">
   <div class="campl-wrap clearfix">
-    <div class="campl-header-container campl-column8" id="global-header-controls"><a href="https://www.cam.ac.uk"
-                                                                                     class="campl-main-logo"><img
-      alt="University of Cambridge"
-      src="/sites/all/themes/drupal-cambridge-theme-master/images/interface/main-logo-small.png"></a>
+    <div class="campl-header-container campl-column8" id="global-header-controls" style="display: block;"><a href="" class="campl-open-menu ir" id="open-menu">View menu</a>
+      <a href="http://www.cam.ac.uk" class="campl-main-logo">
+        <img alt="University of Cambridge" src="/src/images/interface/main-logo-small.svg" height="38">
+      </a>
+      <!--<ul class="campl-unstyled-list campl-horizontal-navigation campl-global-navigation clearfix">
+        <li>
+          <a href="#study-with-us" style="min-height: 18px;">Study at Cambridge</a>
+        </li>
+        <li>
+          <a href="#about-the-university" style="min-height: 18px;">About the University</a>
+        </li>
+        <li>
+          <a href="http://www.cam.ac.uk/research" class="campl-no-drawer" style="min-height: 18px;">Research at Cambridge</a>
+        </li>
+      </ul>-->
+    </div>
+<!--    <div class="campl-column2">
+      <div class="campl-quicklinks"><a href="#" class="campl-open-quicklinks clearfix"><span class="campl-quicklinks-txt">Quick links</span><span class="campl-icon-dropdown ir"></span></a>
+        <ul class="campl-unstyled-list campl-quicklinks-list campl-global-navigation-container  column12 clearfix">
+          <li>
+            <a href="https://philanthropy.cam.ac.uk">Give to Cambridge</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/for-staff">For staff</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/current-students">For current students</a>
+          </li>
+          <li>
+            <a href="http://www.alumni.cam.ac.uk">For alumni</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/for-business">For business</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/colleges-and-departments">Colleges &amp; departments</a>
+          </li>
+          <li>
+            <a href="http://www.lib.cam.ac.uk/libraries/">Libraries &amp; facilities</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/museums-and-collections">Museums &amp; collections</a>
+          </li>
+          <li class="last">
+            <a href="http://www.cam.ac.uk/email-and-phone-search">Email &amp; phone search</a>
+          </li>
+        </ul></div>
+    </div>-->
+<!--    <div class="campl-column2">
+
+      <div class="campl-site-search" id="site-search-btn"><a href="#" class="campl-icon-search-btn ir" id="open-search">Search</a>
+
+        <label for="header-search" class="hidden">Search site</label>
+        <div class="campl-search-input">
+          <form action="http://search.cam.ac.uk/web" method="get">
+            <input id="header-search" type="text" name="query" value="" placeholder="Search">
+
+            <input type="image" class="campl-search-submit " src="../images/interface/btn-search-header.png">
+          </form>
+        </div>
+      </div>
+    </div>-->
+  </div>
+</div>
+<div class="campl-row campl-page-header">
+  <div class="campl-wrap clearfix">
+    <div class="campl-column12">
+      <div class="campl-content-container">
+        <!--<div class="campl-breadcrumb">breadcrumb</div>-->
+        <h1 class="campl-page-title">Medieval Manuscripts Catalogue</h1>
+      </div>
     </div>
   </div>
 </div>
-<div class="campl-row campl-page-header campl-section-page">
-  <div class="campl-wrap clearfix">
-    <div class="campl-column12">
-      <div class="campl-content-container ">
-        <div class="region region-breadcrumb">
-          <div id="block-easy-breadcrumb-easy-breadcrumb" class="block block-easy-breadcrumb">
-            <div>
-              <div itemscope="itemscope" class="easy-breadcrumb campl-breadcrumb" id="breadcrumb"
-                   itemtype="https://data-vocabulary.org/Breadcrumb">
-                <ul class="campl-unstyled-list campl-horizontal-navigation clearfix">
-                  <li class="first-child"><span itemprop="title"><a href="/"
-                                                                    class="easy-breadcrumb_segment easy-breadcrumb_segment-front campl-home ir">Home</a></span>
-                  </li>
-                  <li><span itemprop="title"><a href="/about" class="easy-breadcrumb_segment easy-breadcrumb_segment-1">About</a></span>
-                  </li>
-                  <li><span class="easy-breadcrumb_segment easy-breadcrumb_segment-title"
-                            itemprop="title">Who we were</span></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <h1 class="campl-page-title">Darwin Correspondence Project</h1></div>
+<div class="campl-row campl-page-header">
+  <div class="campl-wrap clearfix campl-local-navigation" id="local-nav"><p class="campl-closed campl-menu-btn" id="menu-btn"><a href="#"><span>Menu</span> <span class="campl-menu-btn-arrow"></span></a></p>
+    <div class="campl-local-navigation-container">
+      <ul class="campl-unstyled-list campl-current">
+        <li class="campl-top"><a class="campl-selected active" href="/search?sort=title">Home</a></li>
+        <li class="campl-top"><a href="/about">About</a></li>
+        <li class="campl-top"><a href="/help">Help</a></li>
+      </ul>
     </div>
   </div>
 </div>
 <div id="app"></div>
 <div class="campl-row campl-local-footer">
   <div class="campl-wrap clearfix">
-    <div class="campl-column3 campl-footer-navigation">
-      <div class="region region-footer-1">
-        <div id="block-block-1" class="block block-block campl-content-container campl-navigation-list">
-          <div class="content"><p>Darwin Correspondence Project<br><a href="mailto:darwin@lib.cam.ac.uk">darwin@lib.cam.ac.uk</a>
-          </p>
-            <p>© <a href="http://www.cam.ac.uk/">University of Cambridge</a> 2022</p>
-            <p><a href="/copyright-declaration">Copyright declaration</a></p>
-            <p><a href="https://www.darwinproject.ac.uk/about/privacy-policy">Privacy policy</a></p>
-            <p>Website by <a href="http://www.surfaceimpression.digital/">Surface Impression</a></p></div>
-        </div>
+    <div class="campl-column12">
+      <div class="campl-content-container">
+        <p>Digital Initiatives <br/>Cambridge University Library, West Road, Cambridge CB3 9DR, UK</p>
+        <p>Built using the <a href="https://cambridge-collection.github.io/">Cambridge Digital Collections Platform</a></p>
       </div>
     </div>
-    <div class="campl-column3 campl-footer-navigation">
-      <div class="region region-footer-2">
-        <div id="block-menu-block-5" class="block block-menu-block campl-content-container campl-navigation-list">
-          <div class="content">
-            <div class="menu-block-wrapper menu-block-5 menu-name-menu-footer-menu parent-mlid-0 menu-level-1">
-              <ul class="campl-unstyled-list">
-                <li class="first leaf menu-mlid-2302"><a href="/commentary/historical-sources" title="">Historical
-                  sources</a></li>
-                <li class="leaf menu-mlid-2303"><a href="/tags/audio" title="">Audio resources</a></li>
-                <li class="leaf menu-mlid-2304"><a href="/tags/video" title="">Video resources</a></li>
-                <li class="last leaf menu-mlid-3382"><a href="/special-features/site-index" title="">Letters data
-                  indexes</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="campl-column3 campl-footer-navigation">
-      <div class="region region-footer-3">
-        <div id="block-block-38" class="block block-block campl-content-container campl-navigation-list">
-          <div class="content">
-            <div class="library-logo"><img alt="Cambridge University Library logo"
-                                           src="/sites/all/static/white_transparent_landscape.png">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="campl-column3 campl-footer-navigation last">
-      <div class="region region-footer-4">
-        <div id="block-block-39" class="block block-block campl-content-container campl-navigation-list">
-          <div class="content">
-            <div class="alcs-logo"><img alt="ALCS logo"
-                                        src="/sites/all/static/ACLS_Logo.png"></div>
-          </div>
-        </div>
-        <div id="block-block-56" class="block block-block campl-content-container campl-navigation-list">
-          <div class="content"><p></p></div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 <div class="campl-row campl-global-footer">
   <div class="campl-wrap clearfix">
-    <div class="campl-column3 campl-footer-navigation">
-      <div class="campl-content-container campl-footer-logo"><img alt="University of Cambridge"
-                                                                  src="/sites/all/themes/drupal-cambridge-theme-master/images/interface/main-logo-small.png"
-                                                                  class="campl-scale-with-grid">
-        <p>© 2024 University of Cambridge</p>
+    <div class="campl-column3 campl-footer-navigation" style="height: 232px;">
+      <div class="campl-content-container campl-footer-logo">
+        <img alt="University of Cambridge" src="/src/images/interface/main-logo-small.png" class="campl-scale-with-grid">
+        <p>© 2025 University of Cambridge</p>
         <ul class="campl-unstyled-list campl-global-footer-links">
-          <li><a href="http://www.cam.ac.uk/university-a-z">University A-Z</a></li>
-          <li><a href="http://www.cam.ac.uk/contact-the-university">Contact the University</a></li>
-          <li><a href="http://www.cam.ac.uk/about-this-site/accessibility">Accessibility</a></li>
-          <li><a href="http://www.admin.cam.ac.uk/univ/information/foi/">Freedom of information</a></li>
-          <li><a href="http://www.cam.ac.uk/about-this-site/terms-and-conditions">Terms and conditions</a></li>
+          <li>
+            <a href="https://www.cam.ac.uk/about-the-university/contact-the-university?ucam-ref=global-footer">Contact the University</a>
+          </li>
+          <li>
+            <a href="https://www.cam.ac.uk/about-this-site/accessibility?ucam-ref=global-footer">Accessibility</a>
+          </li>
+          <li>
+            <a href="https://www.information-compliance.admin.cam.ac.uk/foi?ucam-ref=global-footer">Freedom of information</a>
+          </li>
+          <li>
+            <a href="https://www.cam.ac.uk/about-this-site/privacy-policy?ucam-ref=global-footer">Privacy policy and cookies</a>
+          </li>
+          <li>
+            <a href="https://www.registrarysoffice.admin.cam.ac.uk/governance-and-strategy/anti-slavery-and-anti-trafficking?ucam-ref=global-footer">Statement on Modern Slavery</a>
+          </li>
+          <li>
+            <a href="https://www.cam.ac.uk/about-this-site/terms-and-conditions?ucam-ref=global-footer">Terms and conditions</a>
+          </li>
+          <li>
+            <a href="https://www.cam.ac.uk/university-a-z?ucam-ref=global-footer">University A-Z</a>
+          </li>
         </ul>
       </div>
     </div>
-    <div class="campl-column3 campl-footer-navigation">
+    <div class="campl-column3 campl-footer-navigation" style="height: 232px;">
       <div class="campl-content-container campl-navigation-list">
-        <div class="link-list"><h3><a href="http://www.cam.ac.uk/study-at-cambridge">Study at Cambridge</a></h3>
+
+        <div class="link-list">
+          <h3><a href="https://www.cam.ac.uk/study-at-cambridge?ucam-ref=global-footer">Study at Cambridge</a></h3>
           <ul class="campl-unstyled-list">
-            <li><a href="http://www.study.cam.ac.uk/undergraduate/">Undergraduate</a></li>
-            <li><a href="http://www.admin.cam.ac.uk/students/gradadmissions/prospec/">Graduate</a></li>
-            <li><a href="http://www.cam.ac.uk/about-the-university/international-cambridge/studying-at-cambridge">International
-              students</a></li>
-            <li><a href="http://www.ice.cam.ac.uk">Continuing education</a></li>
-            <li><a href="http://www.admin.cam.ac.uk/offices/education/epe/">Executive and professional education</a>
+            <li>
+              <a href="https://www.undergraduate.study.cam.ac.uk/?ucam-ref=global-footer">Undergraduate</a>
             </li>
-            <li><a href="http://www.educ.cam.ac.uk">Courses in education</a></li>
+            <li>
+              <a href="https://www.postgraduate.study.cam.ac.uk?ucam-ref=global-footer">Postgraduate</a>
+            </li>
+            <li>
+              <a href="https://www.ice.cam.ac.uk/?ucam-ref=global-footer">Continuing education</a>
+            </li>
+            <li>
+              <a href="https://www.epe.admin.cam.ac.uk/?ucam-ref=global-footer">Executive and professional education</a>
+            </li>
+            <li>
+              <a href="https://www.educ.cam.ac.uk/?ucam-ref=global-footer">Courses in education</a>
+            </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="campl-column3 campl-footer-navigation">
-      <div class="campl-content-container campl-navigation-list"><h3><a
-        href="http://www.cam.ac.uk/about-the-university">About the University</a></h3>
+    <div class="campl-column3 campl-footer-navigation" style="height: 232px;">
+      <div class="campl-content-container campl-navigation-list">
+        <h3><a href="https://www.cam.ac.uk/about-the-university?ucam-ref=global-footer">About the University</a></h3>
         <ul class="campl-unstyled-list campl-page-children">
-          <li><a href="http://www.cam.ac.uk/about-the-university/how-the-university-and-colleges-work">How the
-            University and Colleges work</a></li>
-          <li><a href="http://www.cam.ac.uk/about-the-university/visiting-the-university">Visiting the University</a>
+          <li>
+            <a href="https://www.cam.ac.uk/about-the-university/how-the-university-and-colleges-work?ucam-ref=global-footer">How the University
+              and Colleges work</a>
           </li>
-          <li><a href="http://map.cam.ac.uk">Map</a></li>
-          <li><a href="http://www.cam.ac.uk/news">News</a></li>
-          <li><a href="http://www.admin.cam.ac.uk/whatson">Events</a></li>
-          <li><a href="http://www.jobs.cam.ac.uk">Jobs</a></li>
-          <li><a href="http://www.philanthropy.cam.ac.uk">Giving to Cambridge</a></li>
+          <li>
+            <a href="https://www.philanthropy.cam.ac.uk/give-now?ucam-ref=global-footer">Give to Cambridge</a>
+          </li>
+          <li>
+            <a href="https://www.jobs.cam.ac.uk">Jobs</a>
+          </li>
+          <li>
+            <a href="https://map.cam.ac.uk/?ucam-ref=global-footer">Map</a>
+          </li>
+          <li>
+            <a href="https://www.cam.ac.uk/about-the-university/visiting-the-university?ucam-ref=global-footer">Visiting the University</a>
+          </li>
         </ul>
       </div>
     </div>
-    <div class="campl-column3 campl-footer-navigation last">
-      <div class="campl-content-container campl-navigation-list"><h3><a href="http://www.cam.ac.uk/research">Research at
-        Cambridge</a></h3>
+    <div class="campl-column3 campl-footer-navigation last" style="height: 232px;">
+      <div class="campl-content-container campl-navigation-list">
+        <h3><a href="https://www.cam.ac.uk/research?ucam-ref=global-footer">Research at Cambridge</a></h3>
         <ul class="campl-unstyled-list">
-          <li><a href="http://www.cam.ac.uk/research/news">News</a></li>
-          <li><a href="http://www.cam.ac.uk/research/features">Features</a></li>
-          <li><a href="http://www.cam.ac.uk/research/discussion">Discussion</a></li>
-          <li><a href="http://www.cam.ac.uk/research/spotlight-on">Spotlight on...</a></li>
-          <li><a href="http://www.cam.ac.uk/research/research-at-cambridge">About research at Cambridge</a></li>
+          <li>
+            <a href="https://www.cam.ac.uk/research/news?ucam-ref=global-footer">Research news</a>
+          </li>
+          <li>
+            <a href="https://www.cam.ac.uk/research/research-at-cambridge?ucam-ref=global-footer">About research at Cambridge</a>
+          </li>
+          <li>
+            <a href="https://www.cam.ac.uk/public-engagement?ucam-ref=global-footer">Public engagement</a>
+          </li>
+          <li>
+            <a href="https://www.cam.ac.uk/research/spotlight-on?ucam-ref=global-footer">Spotlight on...</a>
+          </li>
         </ul>
       </div>
     </div>
   </div>
 </div>
-<script type="text/javascript"
-        src="/sites/all/themes/drupal-cambridge-theme-master/js/libs/jquery-min.js?v=1.7.1"></script>
-<script type="text/javascript" src="/misc/jquery-extend-3.4.0.js?v=1.4.4"></script>
-<script type="text/javascript"
-        src="/misc/jquery-html-prefilter-3.5.0-backport.js?v=1.4.4"></script>
-<script type="text/javascript" src="/misc/jquery.once.js?v=1.2"></script>
-<script type="text/javascript" src="/misc/drupal.js?s7csui"></script>
-<script type="text/javascript"
-        src="/sites/all/modules/drupal-feature-teasers-master/js/teasers.js?s7csui"></script>
-<script type="text/javascript"
-        src="/sites/all/modules/cudl_album/js/cudl_album.js?s7csui"></script>
-<script type="text/javascript"
-        src="/sites/all/modules/darwin_emotion/darwin_emotion.js?s7csui"></script>
-<script type="text/javascript"
-        src="/sites/all/modules/darwin_kids_timeline/darwin_kids_timeline.js?s7csui"></script>
-<!--<script type="text/javascript"
-        src="/assets/darwin_search/darwin_search.js?s7csui"></script>-->
-<script type="text/javascript"
-        src="/sites/all/modules/learning_resources/js/learning_resources.js?s7csui"></script>
-<script type="text/javascript" src="/misc/ui/jquery.ui.core.min.js?s7csui"></script>
-<script type="text/javascript" src="/misc/ui/jquery.ui.widget.min.js?s7csui"></script>
-<script type="text/javascript" src="/misc/ui/jquery.ui.position.min.js?s7csui"></script>
-<script type="text/javascript"
-        src="/misc/ui/jquery.ui.autocomplete.min.js?s7csui"></script>
-<script type="text/javascript"
-        src="/misc/ui/jquery.ui.progressbar.min.js?s7csui"></script>
-<script type="text/javascript"
-        src="/sites/all/themes/custom_js/remodal/remodal.min.js?s7csui"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-<script type="text/javascript"
-        src="/sites/all/themes/drupal-cambridge-theme-master/js/custom.js?s7csui"></script>
-<script type="text/javascript"
-        src="/sites/all/themes/drupal-cambridge-theme-master/js/libs/ios-orientationchange-fix.js?s7csui"></script>
-<script type="text/javascript"
-        src="/sites/all/themes/drupal-cambridge-theme-master/js/libs/modernizr.js?s7csui"></script>
-<script type="text/javascript"
-        src="/sites/all/themes/drupal-cambridge-theme-master/js/drupal.js?s7csui"></script>
-<script type="text/javascript"
-        src="/sites/default/files/cpn/block-56.js?s7csui"></script>
-<script src="/sites/all/themes/custom_js/SI-custom-for-search.js"></script>
+</div>
+<!--<script type="text/javascript" src="../../../javascripts/libs/ios-orientationchange-fix.js"></script>
+<script type="text/javascript"  src="../../../javascripts/libs/jquery-min.js"></script>
+<script type="text/javascript"  src="../../../javascripts/libs/modernizr.js"></script>
+<script type="text/javascript"  src="../../../javascripts/custom.js"></script>-->
 <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

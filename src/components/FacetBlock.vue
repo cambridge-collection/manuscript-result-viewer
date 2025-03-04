@@ -13,8 +13,10 @@ const props = defineProps({
   router: { type: Object, required: true },
 })
 
+const is_expanded = ref(false)
+const toggleText = ref(['arrow_right', 'arrow_drop_down'])
+
 const fullPath = ref(route.fullPath)
-const expandedName = ref('expand' in route.query ? route.query['expand'] : null)
 const name = ref(
   props.facet_key[props.desired_facet].name.replace(/(^"|"$)/g, ''),
 )
@@ -38,46 +40,40 @@ const subfacets = computed(() => {
 })
 
 const is_expandible = computed(() => {
-  return ['author', 'addressee', 'correspondent'].includes(
-    name.value.toLowerCase(),
-  )
-})
-
-const is_expanded = computed(() => {
-  return (
-    'expand' in route.query && expandedName.value == name.value.toLowerCase()
-  )
-})
-
-const unexpand_link = computed(() => {
-  const { expand, ...unexpand_obj } = route.query
-  return unexpand_obj
-})
-
-const expand_link = computed(() => {
-  const expand_obj = {...route.query}
-  expand_obj['expand'] = name.value.toLowerCase()
-  return expand_obj
+  return [
+    'author',
+    'editor',
+    'language',
+    'century',
+    'date certainty',
+    'origin',
+    'subjects',
+    'materials',
+    'decoration',
+    'musical notation',
+    'binding century',
+    'digital facsimile online',
+    'repository',
+    'collection',
+  ].includes(name.value.toLowerCase())
 })
 </script>
 
 <template>
   <div class="facet" v-if="has_entries">
-    <div class="facetName">
-      {{ name }}
-      <div class="facetMore" v-if="is_expandible">
-        <i v-if="target_facets.length >= 5">
-          <router-link :to="{ name: 'search', query: unexpand_link}" v-if="is_expanded">less <span>-</span></router-link>
-          <router-link :to="{ name: 'search', query: expand_link}" v-else>more <span>+</span></router-link>
-        </i>
+    <h3 class="facetName" @click="() => (is_expanded = !is_expanded)">
+      <span>{{ name }}</span>
+      <div class="facetMore" v-if="is_expandible && target_facets.length >= 5">
+        <span class="material-icons" v-text="toggleText[is_expanded ? 1 : 0]" />
       </div>
-    </div>
+    </h3>
     <div class="facetGroup">
       <table>
         <tbody>
           <facetItem
-            v-for="facet in target_facets"
+            v-for="(facet, index) in target_facets"
             :facet="facet"
+            :show="index <= 4 || is_expanded"
             :param_name="desired_facet"
             :query_params="query_params"
             :subfacets="subfacets"
@@ -93,28 +89,50 @@ const expand_link = computed(() => {
 </template>
 
 <style scoped>
-.dcpNew .facet .facetName {
-  font-weight: bold;
+.facetName,
+.facetGroup {
+  padding: 1rem;
+}
+
+.facet {
+  margin: 0 0.25rem 2rem 0.25rem;
+}
+
+.facetName > span {
+  font-variant: all-petite-caps;
+}
+
+.facetGroup {
+  padding-top: 0;
+}
+
+.facet .facetName {
+  font-weight: 400;
   background-color: transparent;
-  color: #111;
+  color: #fff;
   padding-bottom: 0.5em;
   overflow: hidden;
+  font-size: 1.5rem;
+  margin-top: 0;
+  border: 1px none white;
+  border-style: solid none;
 }
 
-.dcpNew .facet table {
+.facet:first-child .facetName {
+  border-top: none;
+}
+
+.facet table {
   width: 100%;
-  border-bottom: 2px solid #57831a;
+  margin-bottom: 0.25rem;
+  border-bottom: none;
 }
 
-.dcpNew .facet {
-  margin-bottom: 2em;
-}
-
-.dcpNew .facet tbody {
+.facet tbody {
   border-top: none !important;
 }
 
-.dcpNew .facet .facetSubGroup table {
+.facet .facetSubGroup table {
   width: 90%;
   margin-left: 10%;
   border-top: none;
@@ -124,16 +142,8 @@ const expand_link = computed(() => {
   float: right;
 }
 
-.facetMore a,
-.facetLess a {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 0.8em;
-  color: #666;
-  text-transform: uppercase;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px 4px 4px 4px;
-  padding: 2px 8px;
+.facetMore > span {
+  font-size: 1.75rem;
+  vertical-align: baseline;
 }
 </style>

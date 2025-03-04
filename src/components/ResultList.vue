@@ -3,9 +3,11 @@ import { inject, ref, computed, onBeforeMount } from 'vue'
 import { useRouter, useRoute, stringifyQuery } from 'vue-router'
 import ResultItem from '@/components/ResultItem.vue'
 import FacetBlock from '@/components/FacetBlock.vue'
-import CamplPageHeader from '@/components/campl-page-header.vue'
+import SearchBar from '@/components/SearchBar.vue'
+import NoResults from '@/components/NoResults.vue'
 import 'vue-awesome-paginate/dist/style.css'
 import { CSpinner } from '@coreui/vue'
+import 'material-icons/iconfont/filled.css';
 
 const router = useRouter()
 const route = useRoute()
@@ -22,28 +24,38 @@ const is_error = ref(<any>{'bool': false, message: ""})
 // Add any other desired facets into this array
 // They will be displayed in that order
 const desired_facets: string[] = [
-  'f1-document-type',
-  'f1-author',
-  'f1-addressee',
-  'f1-correspondent',
-  'f1-year',
-  's-commentary',
-  's-key-stage',
-  's-ages',
-  's-topics',
+  'lang_sm',
+  'ms_date_sm',
+  'ms_datecert_s',
+  'ms_origin_sm',
+  'author_sm',
+  'editor_sm',
+  'wk_subjects_sm',
+  'ms_materials_sm',
+  'ms_decotype_sm',
+  'ms_music_b',
+  'ms_bindingdate_sm',
+  'ms_digitized_s',
+  'ms_repository_s',
+  'ms_collection_s'
 ]
 
 // Enter facet details here.
-const facet_key = {
-  'f1-document-type': { name: 'Document type', count: 5 },
-  'f1-author': { name: 'Author', count: 5 },
-  'f1-addressee': { name: 'Addressee', count: 5 },
-  'f1-correspondent': { name: 'Correspondent', count: 5 },
-  'f1-year': { name: 'Date', count: 999 },
-  's-commentary': { name: 'Commentary', count: 5 },
-  's-key-stage': { name: 'Key Stage', count: 5 },
-  's-ages': { name: 'Learning Band', count: 5 },
-  's-topics': { name: 'Topics', count: 5 },
+const facet_key:any = {
+  'author_sm': { name: 'Author', count: 5 },
+  'editor_sm': { name: 'Editor', count: 5 },
+  'lang_sm': { name: 'Language', count: 5 },
+  'ms_date_sm': { name: 'Century', count: 5 },
+  'ms_datecert_s': { name: 'Date Certainty', count: 5 },
+  'ms_origin_sm': { name: 'Origin', count: 5 },
+  'wk_subjects_sm': { name: 'Subjects', count: 999 },
+  'ms_materials_sm': { name: 'Materials', count: 5 },
+  'ms_decotype_sm': { name: 'Decoration', count: 5 },
+  'ms_music_b': { name: 'Musical Notation', count: 5 },
+  'ms_bindingdate_sm': { name: 'Binding Century', count: 5 },
+  'ms_digitized_s': { name: 'Digital Facsimile Online', count: 5 },
+  'ms_repository_s': { name: 'Repository', count: 5 },
+  'ms_collection_s': { name: 'Collection', count: 5 },
 }
 
 const advanced_params = [
@@ -75,11 +87,8 @@ function get_current_page(): number {
 }
 
 const currentPage = ref(get_current_page())
+const total = ref(0)
 
-let total = ref(0)
-
-// These are the search params
-//const q_params_tidied: any = {}
 const q_params_tidied = computed(() => {
   const result: any = {}
   for (const key in route.query) {
@@ -95,61 +104,42 @@ const q_params_tidied = computed(() => {
     }
   }
 
-  if ('f1-date' in result && result['f1-date']) {
-    const vals: Array<string> = result['f1-date']
-    const final_vals: Array<string> = []
-    vals.forEach(d => {
-      const d_clean: string = d.replace(/(^"|"$)/g, '')
-      if (d.includes('::')) {
-        const tokens = d_clean.split('::')
-        for (let j = 1; j <= tokens.length; j++) {
-          final_vals.push(tokens.slice(0, j).join('::'))
-        }
-      } else {
-        final_vals.push(d_clean)
-      }
-    })
-    result['f1-date'] = [...new Set(final_vals)].sort()
+  if ('sort' in result) {
+    result['sort'] = result['sort'][0]
   }
   return result
 })
 
+const hidden_params = computed(() => {
+  const o:any[] = []
+
+  Object.keys(q_params_tidied.value).filter((k) => k !== 'sort').sort().forEach((key: string) => {
+    [...q_params_tidied.value[key]].forEach((val: string) => {
+      o.push({key: key, value: val})
+    })
+  })
+  return o
+})
+
 const facets_key = computed(() => {
-  const p = { ...q_params_tidied.value }
-  if ('expand' in route.params) {
-    p['expand'] = route.params['expand']
-  }
-  return p
+  return JSON.stringify({ ...q_params_tidied.value })
 })
 
 const fullpath_uriencoded = computed(() => {
   return encodeURIComponent(route.fullPath)
 })
 
-// Remove search-date-type if not date query terms are entered
-if (
-  'search-date-type' in q_params_tidied.value &&
-  !Object.keys(q_params_tidied.value).some(ai =>
-    ['year', 'month', 'day'].includes(ai),
-  )
-) {
-  delete q_params_tidied.value['search-date-type']
-}
-
+// Make params computed and make param strings an internal var
 const param_strings: string[] = []
-for (const key in q_params_tidied.value) {
-  param_strings.push(key + '=' + encodeURI(q_params_tidied.value[key]))
-}
+Object.keys(q_params_tidied.value).sort().forEach((key: string) => {
+  [...q_params_tidied.value[key]].forEach((val: string) => {
+    param_strings.push(key + '=' + encodeURI(val))
+  })
+});
 
 const params = param_strings.join('&')
 
-const query_key = computed(() => {
-  return JSON.stringify(route.query)
-})
-
 const keyword_values = computed(() => {
-  // Used for :key to determine whether to update the page header
-  // because the keyword appears in the search fields
   let result = ''
   if ('keyword' in query_params.value) {
     result = query_params.value['keyword']['details']
@@ -169,55 +159,6 @@ function get_fieldname(p: string) {
   return name
 }
 
-function get_term_cancel_link(p: string, v: string) {
-  // Need to clear child params if parent is deselected -- ie.
-  // facet down to a specific day - then remove the month
-  // both day and month should not appear in the cancel link
-
-  // Remove object for key 'p' from param list
-  const ps_tidied = Object.fromEntries(
-    Object.entries(q_params_tidied.value).filter(([k, v]) => k !== p),
-  )
-  const current_param = Object.fromEntries(
-    Object.entries(q_params_tidied.value).filter(([k, v]) => k == p),
-  )
-  const qs = []
-  if (Object.keys(ps_tidied).length == 0) {
-    qs.push('keyword=') // Should be browse-all=yes
-  } else {
-    for (const key in ps_tidied) {
-      let vals: any[] = []
-      if (Array.isArray(ps_tidied[key])) {
-        vals = vals.concat(ps_tidied[key])
-      } else {
-        vals.push(ps_tidied[key])
-      }
-      vals.forEach(function (val, index) {
-        if (!(key == p && val == v)) {
-          qs.push(get_fieldname(key) + '=' + val)
-        }
-      })
-    }
-    // Add any relevant values for the current param that would NOT
-    // be cancelled by current cancellation
-    for (const key of Object.keys(current_param)) {
-      let vals: string[] = []
-      if (Array.isArray(current_param[key])) {
-        vals = vals.concat(current_param[key])
-      } else if (typeof current_param[key] == 'string') {
-        vals.push(current_param[key])
-      }
-
-      for (const val of vals) {
-        if (!remove_vals(p, v, key, val)) {
-          qs.push(get_fieldname(key) + '=' + val)
-        }
-      }
-    }
-  }
-  return qs.join('&') + '&page=1'
-}
-
 function remove_vals(
   selected_key: string,
   selected_value: string,
@@ -235,10 +176,58 @@ function remove_vals(
   return matches
 }
 
+function _query_param_sort(key: string) {
+  // Sort facet params by facet title (if facet) or param name (if search term).
+  // Search terms are prefixed with 000_ to ensure they come first in the search
+  // terms display
+  return (key in facet_key) ? facet_key[key].name : "000_"+key
+}
+
+function cancel_link(param_key: string, param_val: string) {
+  const qpt: Record<string, unknown> = q_params_tidied.value
+  const qs: Record<string, Array<string>> = {}
+  if (Object.keys(qpt).length == 0) {
+    qs['keyword']= []
+  } else {
+    for (const key in qpt) {
+      qs[key] = []
+      let vals: any[] = []
+      if (Array.isArray(qpt[key])) {
+        vals = vals.concat(qpt[key])
+      } else {
+        vals.push(qpt[key])
+      }
+      vals.forEach(function (val, index) {
+        if (!(key == param_key && val.replace(/(^"|"$)/g,'') == param_val)) {
+          qs[key].push(val)
+        }
+      })
+    }
+
+    // Add any relevant values for the current param that would NOT
+    // be cancelled by current cancellation
+    let vals: string[] = []
+    if (Array.isArray(qs[param_key])) {
+      vals = vals.concat(qs[param_key])
+    } else if (typeof qs[param_key] == 'string') {
+      vals.push(qs[param_key])
+    }
+    const new_vals = []
+    for (const val of vals) {
+      if (!remove_vals(param_key, param_val, param_key, val)) {
+        new_vals.push(val)
+      }
+    }
+    qs[param_key] = new_vals
+  }
+  return {...qs, 'page': 1}
+}
+
+
 // Final query param string
 const query_params: any = computed(() => {
   const p: any = {}
-  for (const key in q_params_tidied.value) {
+  Object.keys(q_params_tidied.value).sort((a, b) => (_query_param_sort(a)).localeCompare(_query_param_sort(b))).forEach((key) => {
     const value = q_params_tidied.value[key]
 
     p[key] = {
@@ -253,33 +242,38 @@ const query_params: any = computed(() => {
     } else {
       vals.push(value)
     }
-    vals.forEach(function (val, index) {
+    vals.sort().forEach(function (val, index) {
       detail = {
-        value: val,
-        cancel_link: get_term_cancel_link(key, val),
+        value: val
       }
       details.push(detail)
     })
     p[key]['details'] = details
-  }
+  })
+  console.log(p)
   return p
 })
+
+
+function is_empty(obj: any) {
+  let result: boolean = true;
+  if (Object.keys(obj).length === 0) {
+    result = true;
+  } else {
+    result =  Object.values(obj).every((entry:any) =>
+      !entry.details || (Array.isArray(entry.details) && entry.details.length === 0)
+    );
+  }
+  return result
+}
 
 const sort = computed(() => {
   return 'sort' in route.query ? route.query['sort'] : 'score'
 })
+
 const sp = { ...query_params.value }
 delete sp['sort']
 delete sp['tc']
-delete sp['expand']
-
-const expand = computed(() => {
-  return 'expand' in route.query ? route.query['expand'] : null
-})
-
-const keyword = computed(() => {
-  return 'keyword' in route.query ? route.query['keyword'] : null
-})
 
 const advanced_query_string = computed(() => {
   const params: any = {}
@@ -292,32 +286,15 @@ const advanced_query_string = computed(() => {
   return stringifyQuery(params)
 })
 
-function tab_active(name: string): boolean {
-  return (
-    (name == 'this-site' && core.value == 'pages') ||
-    (name == 'cudl-results' && core.value != 'pages')
-  )
-}
-
-function tab_class(name: string) {
-  const active_class = tab_active(name) ? 'active' : null
-  return [name, active_class].join(' ')
-}
-
-function tab_href(name: string) {
-  let path = tab_active(name) ? '#' : '/search?'
-  const params = { keyword: keyword.value, tc: 'pages', page: 1 }
-
-  if (name != 'this-site') {
-    delete (params as { tc?: string }).tc
+function get_facet_header(str: string) {
+  let result: string = str
+  if (str in facet_key ) {
+    result = facet_key[str]['name']
   }
-  if (!tab_active(name)) {
-    path += stringifyQuery(params)
-  }
-  return path
+  return result
 }
 
-const paginated_results = computed(() => total.value >= items_per_page )
+const paginate_results = computed(() => total.value >= items_per_page )
 
 function throw_error(error: any) {
   is_error.value['bool'] = true
@@ -336,6 +313,7 @@ const updateURL = async (page: number): Promise<void> => {
 }
 
 async function fetchData(start: number) {
+  console.log(params)
   commits.value = []
   const control_params = []
   if (start) {
@@ -344,13 +322,13 @@ async function fetchData(start: number) {
   if (sort.value) {
     control_params.push('sort=' + sort.value)
   }
-  if (expand.value) {
-    control_params.push('expand=' + expand.value)
-  }
-  const url =
-    api_url + '/' + core.value + '?' + params + '&' + control_params.join('&')
+
+  const url = api_url + '/' + core.value + '?' + params + '&' + control_params.join('&')
   console.log("Trying " + url)
-  const nq = await fetch(url)
+  const nq = await fetch(url, {
+    method: 'get',
+    mode: 'cors',
+    credentials: 'include'})
     .then(response => {
       if (response.ok) {
         return response.json()
@@ -358,10 +336,12 @@ async function fetchData(start: number) {
       throw new Error('Invalid response')
     })
     .then(responseJson => {
-      //console.log(responseJson)
+      console.log(responseJson)
       for (let i = 0; i < responseJson['response']['docs'].length; i++) {
         const id = responseJson['response']['docs'][i].id
-        const highlights =
+        let highlights = []
+        if ('highlights' in responseJson) {
+        highlights =
           id in responseJson['highlighting']
             ? responseJson['highlighting'][id]
             : { _text_: [] }
@@ -371,7 +351,7 @@ async function fetchData(start: number) {
               .flat(1)
               .filter(n => n),
           ),
-        ]
+        ] }
       }
       return responseJson
     })
@@ -415,9 +395,27 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <campl-page-header :query_params="query_params" :key="keyword_values" />
-  <div class="campl-row campl-content campl-recessed-content dcpNew">
+  <search-bar :keyword="keyword_values"/>
+
+  <div class="campl-row campl-content campl-recessed-content">
     <div class="campl-wrap clearfix">
+      <div :class="['campl-column3 campl-secondary-content', (total > 0).toString()].join(' ')" id="page-secondary">
+        <div class="region-sidebar">
+          <div class="cudl-results sidebar-results-list">
+            <facet-block
+              v-for="facet in desired_facets"
+              :desired_facet="facet"
+              :params="params"
+              v-bind:facets="facets"
+              v-bind:facet_key="facet_key"
+              v-bind:query_params="query_params"
+              v-bind:router="router"
+              v-bind:q_params_tidied="q_params_tidied"
+              :key="facets_key + '::' + facet"
+            />
+          </div>
+        </div>
+      </div>
       <div
         class="campl-column9 campl-main-content"
         id="page-content"
@@ -460,7 +458,6 @@ onBeforeMount(async () => {
                   ><i class="fas fa-envelope" aria-hidden="true"></i
                 ></a>
               </div>
-              <!-- end social media sharing -->
             </div>
           </div>
           <div id="block-system-main" class="block block-system">
@@ -473,22 +470,6 @@ onBeforeMount(async () => {
             </div>
             <div v-show="!is_loading && !is_error['bool']">
               <div class="campl-content-container" :key="route.fullPath">
-                <ul class="tab-menu">
-                  <li>
-                    <a
-                      :href="tab_href('cudl-results')"
-                      :class="tab_class('cudl-results')"
-                      >Letters, people &amp; references</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      :href="tab_href('this-site')"
-                      :class="tab_class('this-site')"
-                      >Articles</a
-                    >
-                  </li>
-                </ul>
                 <div class="darwin-search-results-container">
                   <div class="search-results-page">
                     <div class="darwin-search-results">
@@ -496,30 +477,26 @@ onBeforeMount(async () => {
                         class="cudl-results search-results-list"
                         style="display: block"
                       >
-                        <div class="resultsHeader">
-                          <div class="query">
-                            <div class="label">
-                              <b>Search:</b>
-                            </div>
-                            <div class="subQuery">
-                              <div
+                        <div class="resultsHeader" :key="JSON.stringify(sp)">
+                          <div class="subQuery" v-if="!is_empty(sp)">
+                              <span class="search-limit"
                                 v-for="(obj, key) in sp"
                                 :key="JSON.stringify(obj)"
                               >
-                                <div
+                                <span
                                   class="option"
                                   v-for="o in obj['details']"
                                   :key="JSON.stringify(o)"
                                 >
+                                  <span class="fieldname">{{ get_facet_header(obj.fieldname) }}</span>
                                   <span class="subhit">{{ o.value }}</span>
-                                  in <b>{{ obj.fieldname }}</b
-                                  >&nbsp;<a :href="'/search?' + o.cancel_link"
-                                    ><span class="material-icons"
-                                      >disabled_by_default</span
-                                    ></a
-                                  >
-                                </div>
-                              </div>
+                                  <span>
+                                    <router-link :to="{ name: 'search', query: cancel_link(obj.fieldname, o.value)}">
+                                      <span class="material-icons">close</span>
+                                    </router-link>
+                                    </span>
+                                </span>
+                              </span>
                               <p
                                 class="modify_advanced"
                                 v-if="advanced_query_string.length > 0"
@@ -532,59 +509,33 @@ onBeforeMount(async () => {
                                 >
                               </p>
                             </div>
-                          </div>
-                          <div class="num_items" v-show="total >= 1">
-                            <span id="itemCount">{{ total }}</span> Item{{
-                              total != 1 ? 's' : ''
-                            }}
-                          </div>
-                          <div v-if="total >= 1">
-                            <div class="sort_by" v-if="core != 'pages'">
+                          <div class="sort_by" v-if="total >= 1">
+                              <span class="num_items" v-show="total >= 1">
+                              <b>{{ total }}</b> item{{
+                                  total != 1 ? 's' : ''
+                                }}
+                              <span v-if="Object.keys(sp).length > 0">found</span>
+                              <span v-else>found:</span>
+                            </span>
                               <form method="get" action="/search">
                                 <b>Sorted by:&nbsp;</b>
-                                <select size="1" name="sort">
-                                  {{
-                                    sort
-                                  }}
-                                  <option
-                                    value="score"
-                                    :selected="sort == 'score'"
-                                  >
-                                    relevance
-                                  </option>
-                                  <option
-                                    value="author"
-                                    :selected="sort == 'author'"
-                                  >
-                                    author
-                                  </option>
-                                  <option
-                                    value="addressee"
-                                    :selected="sort == 'addressee'"
-                                  >
-                                    addressee
-                                  </option>
-                                  <option
-                                    value="date"
-                                    :selected="sort == 'date'"
-                                  >
-                                    date
-                                  </option>
-                                </select>
+                                <span class="campl-controls">
+                                  <select size="1" name="sort">
+                                    <option value="score" :selected="sort == 'score'">relevance</option>
+                                    <option value="title" :selected="sort == 'title'">title</option>
+                                  </select>
+                                </span>
                                 <input
-                                  v-for="(value, name) in q_params_tidied"
+                                  v-for="obj in hidden_params"
                                   type="hidden"
-                                  :name="String(name)"
-                                  :value="value"
-                                  :key="name + value"
+                                  :name="String(obj.key)"
+                                  :value="obj.value"
+                                  :key="obj.key + obj.value"
                                 />
-                                <input type="hidden" name="page" value="1" />
-                                <input type="hidden" name="tab" value="" />
-                                <input type="hidden" name="tc" :value="core" />
-                                &nbsp;<input type="submit" value="Go!" />
+                                &nbsp;<input type="submit" class="campl-btn" value="Go!" />
                               </form>
                             </div>
-                            <div :class="'pages ' + paginated_results">
+                          <div :class="'pages ' + paginate_results" v-if="total >= 1">
                               <vue-awesome-paginate
                                 :totalItems="total"
                                 :itemsPerPage="items_per_page"
@@ -595,135 +546,16 @@ onBeforeMount(async () => {
                                 :linkUrl="'/search?page=[page]&' + params"
                               />
                             </div>
-                          </div>
-                          <table v-else-if="total == 0">
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p>Sorry, no results...</p>
-                                  <p>Try modifying your search:</p>
-                                  <div class="forms">
-                                    <form method="get" action="/search">
-                                      <table>
-                                        <tbody>
-                                          <tr>
-                                            <td>
-                                              <input
-                                                type="text"
-                                                name="keyword"
-                                                size="40"
-                                                :value="keyword_values"
-                                              />
-                                              <input
-                                                type="hidden"
-                                                name="page"
-                                                value="1"
-                                              />
-                                              &nbsp;<input
-                                                type="submit"
-                                                value="Search"
-                                              />
-                                              <input
-                                                type="reset"
-                                                onclick="location.href='/search'"
-                                                value="Clear"
-                                              />
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td>
-                                              <table class="sampleTable">
-                                                <tbody>
-                                                  <tr>
-                                                    <td colspan="2">
-                                                      <b>NB:</b> Searches are
-                                                      not case sensitive and
-                                                      will find both singular
-                                                      and plural of any term
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td colspan="2">
-                                                      Examples:
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="sampleQuery">
-                                                      flowering
-                                                    </td>
-                                                    <td class="sampleDescrip">
-                                                      find the word ‘flowering’
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="sampleQuery">
-                                                      flowering plant
-                                                    </td>
-                                                    <td class="sampleDescrip">
-                                                      find documents containing
-                                                      both ‘flowering’ and
-                                                      ‘plant(s)’
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="sampleQuery">
-                                                      "flowering plant"
-                                                    </td>
-                                                    <td class="sampleDescrip">
-                                                      find the phrase ‘flowering
-                                                      plant(s)’
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="sampleQuery">
-                                                      pl*t
-                                                    </td>
-                                                    <td class="sampleDescrip">
-                                                      find any word beginning
-                                                      ‘pl’ followed by zero or
-                                                      more characters, and
-                                                      ending ‘t’
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="sampleQuery">
-                                                      *plant
-                                                    </td>
-                                                    <td class="sampleDescrip">
-                                                      find any word ending with
-                                                      ‘plant(s)’
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="sampleQuery">
-                                                      plant*
-                                                    </td>
-                                                    <td class="sampleDescrip">
-                                                      find any word beginning
-                                                      ‘plant’
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </form>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                          <NoResults :keyword="keyword_values" v-else-if="total === 0" />
                         </div>
                         <ResultItem
                           v-for="(item, index) in commits"
                           :item="item"
                           :currentPage="currentPage"
                           :index="index"
-                          :key="JSON.stringify(item)"
+                          :key="item.id"
                         />
-                        <div :class="'pages ' + paginated_results">
+                        <div :class="'pages ' + paginate_results" v-if="total >= 1">
                           <vue-awesome-paginate
                             :totalItems="total"
                             :itemsPerPage="items_per_page"
@@ -737,33 +569,6 @@ onBeforeMount(async () => {
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- facets -->
-
-      <div class="campl-column3 campl-secondary-content" id="page-secondary">
-        <div class="region-sidebar">
-          <div class="srch-sidebar"></div>
-          <div class="view-my-sidebar">
-            <div class="field-content">
-              <h3>Refine your search</h3>
-              <div class="cudl-results sidebar-results-list">
-                <div class="facet">
-                  <facet-block
-                    v-for="facet in desired_facets"
-                    :desired_facet="facet"
-                    :params="params"
-                    v-bind:facets="facets"
-                    v-bind:facet_key="facet_key"
-                    v-bind:query_params="query_params"
-                    v-bind:router="router"
-                    v-bind:q_params_tidied="q_params_tidied"
-                    :key="facets_key + '::' + facet"
-                  />
                 </div>
               </div>
             </div>
@@ -789,91 +594,160 @@ onBeforeMount(async () => {
   vertical-align: text-top;
 }
 
-.dcpNew .bibliography .item-title {
-  font-style: inherit;
+.campl-secondary-content {
+  background: #003e74;
 }
 
-.dcpNew em.match {
+#block-darwin-sharing-darwin-sharing-add {display:none}
+
+em.match {
   color: rgb(42, 127, 189);
   font-weight: bold;
   font-style: inherit;
 }
 
-.dcpNew .search-results-page .search-result-item .snippets li {
+
+.search-results-page .search-result-item .snippets li {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
 
-/*.dcpNew .snippets {
-  max-height: 6em;
-}*/
-
-.dcpNew .search-results-page .search-result-item .main-icon {
+.search-results-page .search-result-item .main-icon {
   line-height: 1.75;
 }
 
-.dcpNew span.doubleUnderline,
-.dcpNew div.doubleUnderline {
+span.doubleUnderline,
+div.doubleUnderline {
   font-weight: normal;
   text-decoration-line: underline;
   text-decoration-style: double;
 }
 
-.dcpNew .pagination-container {
+div#page-secondary.false {
+  display: none;
+}
+
+.pagination-container {
   display: flex;
   column-gap: 10px;
 }
-
-.dcpNew ul#componentContainer .paginate-buttons {
-  font-size: 0.8em;
-  height: 2em;
-  width: 2em;
-  border-radius: 6px;
-  cursor: pointer;
-  background-color: rgb(240, 240, 240);
-  border: 1px solid rgb(217, 217, 217);
-  color: black;
+.pagination-container li {line-height: 1.5rem;font-size: 0.8rem;}
+ul#componentContainer .paginate-buttons {
+  font-weight:normal;
+  padding: 0.625em 1em;
+  line-height: 1.5em;
+  text-decoration: none;
+  border: 1px solid #d6d6d6;
+  margin: 0 .18em;
+  color: #171717;
+  background:none;
 }
 
-.dcpNew ul#componentContainer .paginate-buttons:hover {
+ul#componentContainer .paginate-buttons:hover {
   background-color: rgb(254, 254, 254);
   border: 1px solid rgb(200, 200, 200);
 }
 
-.dcpNew .search-results-page .pages {
+ul#componentContainer .paginate-buttons.active-page {
+  cursor: default;
+  font-weight: bold;
+  background-color: #f2f2f2;
+  color: #000000;
+}
+
+ul#componentContainer .paginate-buttons.next-button, ul#componentContainer .paginate-buttons.back-button {
+  background: #000;
+  color: rgb(254, 254, 254);
+}
+
+.search-results-page .pages {
   margin: 1em 0;
   font-weight: bold;
   display: flex;
   justify-content: center;
 }
 
-.dcpNew .pages ul#componentContainer {
+.search-results-page .pages a {
+  margin: 0 5px 0 5px;
+  padding: 2px 10px;
+  background-color: #f8f8f8;
+  border: 1px solid #eee;
+}
+
+.pages ul#componentContainer {
   margin-left: 0;
 }
 
-.dcpNew ul#componentContainer a.active-page,
-.dcpNew ul#componentContainer a.active-page:hover {
+ul#componentContainer a.active-page,
+ul#componentContainer a.active-page:hover {
   cursor: default;
   background: rgb(254, 254, 254);
   border-color: rgb(200, 200, 200);
 }
 
-.dcpNew .subQuery a {
-  display: inline-block;
+.num_items {margin-bottom:1rem;}
+
+.sort_by {
+  margin: 2rem 0;
+    display: flex ;
+    justify-content: space-between;
+}
+div.option {padding-top:0.3rem;}
+
+.subQuery {background: #f2f2f2;
+  padding: 1.5rem 1rem;
+border: 1px solid #d6d6d6;
+display:flex;
+gap:1rem;
+  flex-wrap: wrap;
 }
 
-.dcpNew .subQuery a .material-icons {
+.subQuery a {
   display: inline-block;
-  vertical-align: bottom;
-  font-size: 1rem;
-  color: rgb(240, 0, 0);
+  margin-left: 0.5rem
 }
 
-.dcpNew .resultsHeader .query {
+.subQuery a .material-icons {
+  display: inline-block;
+  vertical-align: text-bottom;
+  font-size: 1.25rem;
+  color: #171717;
+}
+
+.search-limit {display:flex; gap: 1rem; flex-wrap: wrap;}
+
+.subQuery .option {
+  font-weight: normal;
+  padding: 0.5em;
+  line-height: 1;
+  text-decoration: none;
+  border: 1px solid #d6d6d6;
+  margin: 0 .18em;
+  color: #171717;
+  background: none;
+  width: fit-content;
+  background: #fff;
+}
+
+.search-limit span.option >span {
+  display: inline;
+  vertical-align: baseline;
+}
+
+.search-limit .fieldname {
+  padding-right: 0.25rem;
+  margin-right:0.25rem;
+  border-right: 1px solid #d6d6d6;
+  font-variant: all-petite-caps;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.resultsHeader .query {
   margin-bottom: 1.5em;
 }
 
-.dcpNew .campl-column3.campl-secondary-content {
+.campl-column3.campl-secondary-content {
   display: block;
   position: relative !important;
 }
@@ -888,9 +762,6 @@ onBeforeMount(async () => {
   box-shadow: rgba(0, 0, 0, 0.27) 1px 1px 5px;
 }
 
-#page-content .search-results-page .search-result-item h2 a {
-  color: #111;
-}
 
 /* CSS for spinner from coreui - https://github.com/coreui/coreui.
    It's compatible bootstrap 5 and loading up the full CSS disrupts the current
@@ -922,7 +793,7 @@ onBeforeMount(async () => {
   vertical-align: var(--cui-spinner-vertical-align);
   border-radius: 50%;
   animation: var(--cui-spinner-animation-speed) linear infinite
-    var(--cui-spinner-animation-name);
+  var(--cui-spinner-animation-name);
 }
 
 @keyframes spinner-border {
@@ -1004,7 +875,7 @@ div.pages.false .pagination-container li:has(a.number-buttons) {
     display: inherit;
   }*/
 
-  .dcpNew ul#componentContainer .paginate-buttons {
+  ul#componentContainer .paginate-buttons {
     font-size: 0.7em;
     height: 1.5em;
     width: 1.5em;

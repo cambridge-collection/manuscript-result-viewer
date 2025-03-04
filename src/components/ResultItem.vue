@@ -17,96 +17,68 @@ const show_snippets = ref(false)
       item['facet-document-type'] + ' docHit search-result-item has-summary'
     "
   >
-    <div v-if="item['facet-document-type'] == 'site'">
-      <div v-if="item['og_image.content']" class="this-site key-image">
-        <img
-          class="campl-scale-with-grid"
-          :src="item['og_image.content']"
-          :alt="item['og_image_alt.content']"
-        />
-      </div>
-      <div
-        :class="'this-site-result-wrap ' + (item['og_image.content'] != null)"
-      >
-        <h2 class="item-title">
-          <a :href="item.path">{{ item.title }}</a>
-        </h2>
-        <div class="summary">
-          <p v-html="item['content.summary']"></p>
-        </div>
-      </div>
-    </div>
-    <div v-else>
+    <div>
       <h2 class="item-title">
-        <span
-          v-if="item['facet-document-type'] == 'bibliography'"
-          v-html="item['content_bibl-citation']"
-        />
-        <a :href="item.path" v-else>{{ item.title }}</a>
+        <a :href="'/catalog/' + item.root_filename_s">{{ item.title }}</a>
       </h2>
-      <div class="main-icon" v-if="item['facet-document-type'] == 'letter'">
-        <i class="material-icons">mail</i><span>Letter</span>
-      </div>
-      <div
-        class="main-icon"
-        v-else-if="item['facet-document-type'] == 'people'"
-      >
-        <i class="material-icons">person</i><span>Person</span>
-      </div>
-      <div
-        class="main-icon"
-        v-else-if="item['facet-document-type'] == 'bibliography'"
-      >
-        <i class="material-icons">library_books</i><span>Reference</span>
-      </div>
-      <div class="clear" v-if="item['facet-document-type'] == 'letter'"></div>
-      <div class="floatLeft" v-if="item['facet-document-type'] == 'letter'">
-        <div class="thumbnail" v-if="item['preview-tile']">
-          <a :href="item.path">
-            <img alt="thumbnail" :src="item['preview-tile']"
-          /></a>
+      <div class="table">
+        <div class="row" v-if="item.ms_oldshelfmarks_smni">
+          <div class="label">Former Shelfmark:</div>
+          <div class="content">
+            <div
+              v-for="(old_shelfmark, index) in item.ms_oldshelfmarks_smni"
+              :index="index"
+              :key="JSON.stringify(old_shelfmark)"
+            >
+              {{ old_shelfmark }}
+            </div>
+          </div>
         </div>
-        <div
-          class="summary"
-          v-html="item['content_summary']"
-          v-if="item['content_summary']"
-        />
+        <div class="row" v-if="item.ms_summary_sm">
+          <div class="label">Contents:</div>
+          <div class="content">
+            <div
+              v-for="(summary_item, index) in item.ms_summary_sm"
+              :index="index"
+              :key="JSON.stringify(summary_item)"
+            >
+              {{ summary_item }}
+            </div>
+          </div>
+        </div>
+<!--        <div class="row" v-if="item.ms_materials_sm">
+          <div class="label">Material:</div>
+          <div class="content">
+            <div
+              v-for="(summary_item, index) in item.ms_materials_sm"
+              :index="index"
+              :key="JSON.stringify(summary_item)"
+            >
+              {{ summary_item }}
+            </div>
+          </div>
+        </div>
+        <div class="row" v-if="item.ms_decotype_sm">
+          <div class="label">Decoration:</div>
+          <div class="content">
+            <div
+              v-for="(summary_item, index) in item.ms_decotype_sm"
+              :index="index"
+              :key="JSON.stringify(summary_item)"
+            >
+              {{ summary_item }}
+            </div>
+          </div>
+        </div>-->
       </div>
-      <table>
-        <tbody v-if="item['facet-document-type'] == 'letter'">
-          <tr>
-            <td class="col2"><b>Author:&nbsp;&nbsp;</b></td>
-            <td class="col3">
-              {{ item['search-author'].join('; ') }}
-            </td>
-          </tr>
-          <tr>
-            <td class="col2"><b>Addressee:&nbsp;&nbsp;</b></td>
-            <td class="col3">
-              {{ item['search-addressee'].join('; ') }}
-            </td>
-          </tr>
-          <tr>
-            <td class="col2"><b>Date:&nbsp;&nbsp;</b></td>
-            <td class="col3">{{ item.displayDate }}</td>
-          </tr>
-          <tr>
-            <td class="col2"><b>Classmark:&nbsp;&nbsp;</b></td>
-            <td class="col3">{{ item['search-classmark'] }}</td>
-          </tr>
-          <tr>
-            <td class="col2"><b>Letter no:&nbsp;&nbsp;</b></td>
-            <td class="col3">{{ item['document-id'] }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-    <div class="matches" v-if="item.highlighting.length > 0">
+    <div
+      class="matches"
+      v-if="'highlighting' in item && item.highlighting.length > 0"
+    >
       <h3>
         {{ item.highlighting.length }}
-        snippet{{
-          item.highlighting.length == 1 ? '' : 's'
-        }}
+        snippet{{ item.highlighting.length == 1 ? '' : 's' }}
       </h3>
       <div class="snippets">
         <ul>
@@ -149,6 +121,30 @@ const show_snippets = ref(false)
 </template>
 
 <style scoped>
+.table {
+  display: table;
+}
+.row {
+  display: table-row;
+}
+.table > .row > .content,
+.table > .row > .label {
+  display: table-cell;
+  padding-top: 0.5rem;
+}
+.table > .row > .label {
+font-weight: 700;
+  width: fit-content;
+  white-space: nowrap;
+  text-align:right;
+  padding:0.5rem 0.75rem 0.25rem 0 ;
+}
+
+.table > .row > .content {
+  width: 100%;
+  line-height: 1.5;
+}
+
 .search-results-page .search-result-item .snippets {
   transition: none;
   overflow: auto;
@@ -167,23 +163,38 @@ const show_snippets = ref(false)
 .v-leave-to {
   opacity: 0;
 }
-.search-results-page .search-result-item h2.item-title {
-  display: inline-block;
-  float: none;
-}
 
-
-.site.search-result-item div.key-image.this-site {
-  float: right;
-  width: 25%;
-}
 
 .this-site-result-wrap {
   width: 70%;
   float: left;
 }
-div.darwin-search-results-container .search-result-item .summary {
-  float: none;
+
+
+.docHit {
+  margin-bottom: 2rem;
+  border-bottom: 1px #003e74 dotted;
+  padding-top: 0.5rem;
+  font-size: 1rem;
+}
+
+
+
+.docHit h2 {font-weight: 800;}
+.docHit h2 a:link,
+.docHit h2 a:visited,
+.docHit h2 a:hover,
+.docHit h2 a:focus,
+.docHit h2 a:active {
+  color: #003e74;
+}
+
+.docHit .table {
+  font-size: 0.9rem;
+  padding: 1rem 2rem 0 2rem;
   width: 100%;
 }
+
+.docHit label {font-weight:800}
+
 </style>
