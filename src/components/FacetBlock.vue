@@ -1,22 +1,17 @@
 <script lang="ts" setup>
 import FacetItem from '../components/FacetItem.vue'
-import { useRoute } from 'vue-router'
 import { computed, ref } from 'vue'
 
-const route = useRoute()
 const props = defineProps({
   desired_facet: { type: String, required: true },
   facets: { type: Object, required: true },
   facet_key: { type: Object, required: true },
-  query_params: { type: Object, required: true },
-  q_params_tidied: { type: Object, required: true },
-  router: { type: Object, required: true },
+  params: {type: Array as () => { key: string; value: string }[], required: true},
 })
 
 const is_expanded = ref(false)
 const toggleText = ref(['arrow_right', 'arrow_drop_down'])
 
-const fullPath = ref(route.fullPath)
 const name = ref(
   props.facet_key[props.desired_facet].name.replace(/(^"|"$)/g, ''),
 )
@@ -57,6 +52,8 @@ const is_expandible = computed(() => {
     'collection',
   ].includes(name.value.toLowerCase())
 })
+
+const current_facet_selections = computed(() => props.params.filter((item: { key: string; value: string }) => item.key === props.desired_facet).map((item: { key: string; value: string }) => item.value))
 </script>
 
 <template>
@@ -75,12 +72,11 @@ const is_expandible = computed(() => {
             :facet="facet"
             :show="index <= 4 || is_expanded"
             :param_name="desired_facet"
-            :query_params="query_params"
+            :params="params"
+            :current_selections="current_facet_selections"
             :subfacets="subfacets"
             v-bind:is_subgroup="false"
-            v-bind:router="router"
-            v-bind:q_params_tidied="props.q_params_tidied"
-            :key="JSON.stringify(facet) + fullPath"
+            :key="JSON.stringify(facet)"
           />
         </tbody>
       </table>

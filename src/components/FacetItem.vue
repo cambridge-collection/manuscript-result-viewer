@@ -1,22 +1,16 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import escape from 'core-js/actual/regexp/escape'
-const route = useRoute()
+import { _params_to_query_structure, cancel_link } from '@/lib/utils';
 
 const props = defineProps({
-  facet: { type: Object, required: true },
+  facet: { type: Object as () => { val: string; count: number }, required: true },
   param_name: { type: String, required: true },
-  query_params: { type: Object, required: true },
+  params: {type: Array as () => { key: string; value: string }[], required: true},
+  current_selections: {type: Array as () => string[], required: true},
   subfacets: { type: Object, required: true },
-  q_params_tidied: { type: Object, required: true },
   is_subgroup: { type: Boolean, required: true },
-  router: { type: Object, required: true },
   show: {type: Boolean, required: true},
-})
-
-const params = computed(() => {
-  return props.query_params
 })
 
 const mapped_param_name = computed(() => {
@@ -27,53 +21,61 @@ const mapped_param_name = computed(() => {
   return result
 })
 
-function is_selected(value: string) {
-  const keys: Array<string> = Object.keys(params['value']).filter((i) => (i == mapped_param_name.value)) //|| facetRegex.test(i)) )
-  return  keys.some((key: string) => {
-    return (params['value'][key]['details'].some(
-      (e: any) => {
-        const para_val: string = String(e.value).replaceAll(/^"(.+?)"$/g, '$1')
+const is_selected = computed(() => {
+  const value: string = props.facet.val
+  return (props.current_selections.some(
+      (e: string) => {
+        const para_val: string = String(e).replaceAll(/^"(.+?)"$/g, '$1')
         const re = new RegExp("^"+ escape(value) +'::')
 
         return para_val == value || re.test(para_val)
       }
     ))
   })
+
+// Extract to common library
+const facet_key: Record<string, { name: string; count: number }> = {
+  'author_sm': { name: 'Author', count: 5 },
+  'editor_sm': { name: 'Editor', count: 5 },
+  'lang_sm': { name: 'Language', count: 5 },
+  'ms_date_sm': { name: 'Century', count: 5 },
+  'ms_datecert_s': { name: 'Date Certainty', count: 5 },
+  'ms_origin_sm': { name: 'Origin', count: 5 },
+  'wk_subjects_sm': { name: 'Subjects', count: 999 },
+  'ms_materials_sm': { name: 'Materials', count: 5 },
+  'ms_decotype_sm': { name: 'Decoration', count: 5 },
+  'ms_music_b': { name: 'Musical Notation', count: 5 },
+  'ms_bindingdate_sm': { name: 'Binding Century', count: 5 },
+  'ms_digitized_s': { name: 'Digital Facsimile Online', count: 5 },
+  'ms_repository_s': { name: 'Repository', count: 5 },
+  'ms_collection_s': { name: 'Collection', count: 5 },
 }
 
-const uri = computed(() => {
-  const n: Record<string, unknown> = {}
+// Extract to common library
+function _query_param_sort(key: string) {
+  // Sort facet params by facet title (if facet) or param name (if search term).
+  // Search terms are prefixed with 000_ to ensure they come first in the search
+  // terms display
+  return (key in facet_key) ? facet_key[key].name : "000_"+key
+}
 
-  // Copy unaffected params
-  for (const key of Object.keys(params['value'])) {
-    if (mapped_param_name.value != key) {
-      const val_list: any = []
-      params['value'][key]['details'].forEach(function (obj: any) {
-        val_list.push(obj['value'])
-      })
-      val_list.sort()
-      n[key] = val_list
-    }
-  }
-  // deal with affected param
-  const new_param = '"' + props.facet.val + '"'
-  if (mapped_param_name.value in params['value']) {
-    const ar = []
-    params['value'][mapped_param_name.value]['details'].forEach(function (
-      obj: any,
-    ) {
-      ar.push(obj['value'])
-    })
-    ar.push(new_param)
-    n[mapped_param_name.value] = ar
-  } else {
-    n[mapped_param_name.value] = new_param
-  }
-  return n
-})
 
-const url_reset_page = computed(() => {
-  return { ...uri.value, ...{ page: 1 } }
+const new_facet_params = computed(() => {
+  const param_array: { key: string; value: string }[] = [...props.params]
+  param_array.push({key: props.param_name, value: props.facet.val})
+
+  param_array.sort((a, b) => {
+    // First compare by key
+    const keyComparison = _query_param_sort(a.key).localeCompare(_query_param_sort(b.key));
+    if (keyComparison !== 0) return keyComparison;
+
+    // If keys are the same, compare by value
+    return a.value.localeCompare(b.value);
+  });
+
+  const result: Record<string, string[]>  = _params_to_query_structure(param_array)
+  result['page'] = ['1']
+  return result
 })
 
 const subgroupName = computed(() => {
@@ -114,95 +116,31 @@ const name = computed(() => {
   return value
 })
 
-const cancel_link = computed(() => {
-  const p = props.param_name
-  const v = props.facet.val
-  // Need to clear child params if parent is deselected -- ie.
-  // facet down to a specific day - then remove the month
-  // both day and month should not appear in the cancel link
-
-  // Remove object for key 'p' from param list
-  const qpt: Record<string, unknown> = props.q_params_tidied
-  const qs: Record<string, Array<string>> = {}
-  if (Object.keys(qpt).length == 0) {
-    qs['keyword']= []
-  } else {
-    for (const key in qpt) {
-      qs[key] = []
-      let vals: any[] = []
-      if (Array.isArray(qpt[key])) {
-        vals = vals.concat(qpt[key])
-      } else {
-        vals.push(qpt[key])
-      }
-      vals.forEach(function (val, index) {
-        if (!(key == p && val.replace(/(^"|"$)/g,'') == v)) {
-          qs[key].push(val)
-        }
-      })
-    }
-    // Add any relevant values for the current param that would NOT
-    // be cancelled by current cancellation
-
-      const key: string = mapped_param_name.value //Object.keys(current_param)
-      let vals: string[] = []
-      if (Array.isArray(qs[key])) {
-        vals = vals.concat(qs[key])
-      } else if (typeof qs[key] == 'string') {
-        vals.push(qs[key])
-      }
-      const new_vals = []
-      for (const val of vals) {
-        if (!remove_vals(key, props.facet.val, key, val)) {
-          new_vals.push(val)
-        }
-      }
-      qs[key] = new_vals
-  }
-  return {...qs, 'page': 1}
-})
-
-function remove_vals(
-  selected_key: string,
-  selected_value: string,
-  key: string,
-  val: string,
-) {
-  let matches = key == selected_key && val == selected_value
-  if (/^f\d+-date$/.test(selected_key)) {
-    const tidied_val = selected_value.replaceAll(/^"(.+?)"$/g, '$1')
-    const val_pattern = new RegExp('^' + escape(tidied_val) + '::')
-    matches =
-      val == selected_value ||
-      val_pattern.test(val.replaceAll(/^"(.+?)"$/g, '$1'))
-  }
-  return matches
-}
 </script>
 
 <template>
   <tr v-show="show">
     <td class="col2">
-      <span v-if="is_selected(props.facet.val)">{{ name }}</span>
-      <router-link :to="{ name: 'search', query: url_reset_page }" v-else>
+      <span v-if="is_selected">{{ name }}</span>
+      <router-link :to="{ name: 'search', query: new_facet_params }" v-else>
         {{  name }}
       </router-link>
     </td>
     <td class="col3">
       <router-link
-        :to="{ name: 'search', query: cancel_link }"
-        v-if="is_selected(props.facet.val)"
+        :to="{ name: 'search', query: cancel_link(param_name, facet.val, params) }"
+        v-if="is_selected"
       >
         <span class="material-icons">close</span>
       </router-link>
       <span v-else>({{ props.facet.count }})</span>
     </td>
   </tr>
-  <tr v-if="is_selected(props.facet.val) && subgroupName">
+  <tr v-if="is_selected && subgroupName">
     <td colspan="2">
       <div
         class="facetSubGroup"
-        v-if="is_selected(props.facet.val) && subgroupName"
+        v-if="is_selected && subgroupName"
       >
         <table>
           <tbody>
@@ -210,13 +148,12 @@ function remove_vals(
               v-for="sub in get_subgroup"
               :facet="sub"
               :param_name="subgroupName"
-              :query_params="query_params"
               :subfacets="subfacets"
               :show="show"
+              :current_selections="current_selections"
+              v-bind:params
               v-bind:is_subgroup="true"
-              v-bind:router="router"
-              v-bind:q_params_tidied="props.q_params_tidied"
-              :key="JSON.stringify(route.fullPath) + JSON.stringify(sub)"
+              :key="JSON.stringify(sub)"
             />
           </tbody>
         </table>
