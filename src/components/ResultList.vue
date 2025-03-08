@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, ref, computed, onBeforeMount } from 'vue';
+import { ref, computed, onBeforeMount } from 'vue';
 import { useRouter, useRoute, stringifyQuery } from 'vue-router';
 import ResultItem from '@/components/ResultItem.vue';
 import FacetBlock from '@/components/FacetBlock.vue';
@@ -13,7 +13,6 @@ import * as implementation from '@/implementationConfig'
 
 const router = useRouter();
 const route = useRoute();
-/*const api_url = inject('api_url');*/
 
 const commits = ref<Array<{ id: PropertyKey; [key: string]: unknown }>>([]);
 const facets = ref<Record<string, unknown>>({});
