@@ -21,7 +21,7 @@ const props = defineProps({
                 type="text"
                 name="keyword"
                 size="40"
-                :value="keyword"
+                :value="props.keyword"
               />
               <input
                 type="hidden"

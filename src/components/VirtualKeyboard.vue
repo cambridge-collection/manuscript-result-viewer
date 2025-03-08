@@ -55,8 +55,7 @@ div.search_container {
   width: 100%;
   display: flex;
   gap: 0.5rem;
-  align-items: baseline;
-  display:flex; gap: 0.5rem;align-items: anchor-center;
+  align-items: center;
 }
 
 .search_container .keyboardInput {

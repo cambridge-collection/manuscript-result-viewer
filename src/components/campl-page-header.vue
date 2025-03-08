@@ -1,20 +1,4 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-
-const props = defineProps({
-  query_params: { type: Object, required: true },
-})
-
-const keyword = computed(() => {
-  let result = null
-  if ('keyword' in props.query_params) {
-    result = props.query_params['keyword']['details']
-      .map((e: Record<string, unknown>) => e.value)
-      .join(' ')
-  }
-  return result
-})
-
 </script>
 
 <template>
