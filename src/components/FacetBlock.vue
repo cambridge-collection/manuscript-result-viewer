@@ -9,18 +9,18 @@ const props = defineProps({
   params: {type: Array as () => { key: string; value: string }[], required: true},
 })
 
-const is_expanded = ref(false)
-const toggleText = ref(['arrow_right', 'arrow_drop_down'])
+const is_expanded = ref<boolean>(false);
+const toggleText = ref<Array<'arrow_right' | 'arrow_drop_down'>>(['arrow_right', 'arrow_drop_down'])
 
-const name = ref(
+const name = ref<string>(
   props.facet_key[props.desired_facet].name.replace(/(^"|"$)/g, ''),
 )
 
-const target_facets = computed(() => {
+const target_facets = computed<{ val: string; count: number; }[]>(() => {
   return props.facets[props.desired_facet]
 })
 
-const has_entries = computed(() => {
+const has_entries = computed<boolean>(() => {
   return (
     props.desired_facet in props.facets &&
     props.facets[props.desired_facet].length > 0
@@ -34,7 +34,7 @@ const subfacets = computed(() => {
   }
 })
 
-const is_expandible = computed(() => {
+const is_expandible = computed<boolean>(() => {
   return [
     'author',
     'editor',
@@ -53,7 +53,9 @@ const is_expandible = computed(() => {
   ].includes(name.value.toLowerCase())
 })
 
-const current_facet_selections = computed(() => props.params.filter((item: { key: string; value: string }) => item.key === props.desired_facet).map((item: { key: string; value: string }) => item.value))
+const current_facet_selections = computed<string[]>(() => props.params
+  .filter((item: { key: string; value: string }) => item.key === props.desired_facet)
+  .map((item: { key: string; value: string }) => item.value))
 </script>
 
 <template>

@@ -8,75 +8,34 @@ import NoResults from '@/components/NoResults.vue';
 import 'vue-awesome-paginate/dist/style.css';
 import { CSpinner } from '@coreui/vue';
 import 'material-icons/iconfont/filled.css';
-import { cancel_link, _get_first_value } from '@/lib/utils';
+import { cancel_link, _get_first_value,_query_param_sort, _tracer_bullet } from '@/lib/utils';
+import * as implementation from '@/implementationConfig'
 
 const router = useRouter();
 const route = useRoute();
-const api_url = inject('api_url');
+/*const api_url = inject('api_url');*/
 
-const commits = ref(<any[]>[]);
+const commits = ref<Array<{ id: PropertyKey; [key: string]: unknown }>>([]);
 const facets = ref<Record<string, unknown>>({});
-const is_loading = ref(true);
-const is_error = ref(<any>{'bool': false, message: ""});
+const is_loading = ref<boolean>(true);
+const is_error = ref<{ bool: boolean; message: string }>({ bool: false, message: "" });
 const items_per_page = 20
-const total = ref(0)
-const currentPage = ref(get_current_page())
+const total = ref<number>(0);
+const currentPage = ref<number>(get_current_page());
 
-/* Define implementation settings /*
-
- */
-
-// Specify facets to be shown in the sidebar, displayed in array order.
-const desired_facets: string[] = [ 'lang_sm', 'ms_date_sm', 'ms_datecert_s', 'ms_origin_sm', 'author_sm', 'editor_sm', 'wk_subjects_sm', 'ms_materials_sm', 'ms_decotype_sm', 'ms_music_b', 'ms_bindingdate_sm', 'ms_digitized_s', 'ms_repository_s', 'ms_collection_s' ]
-
-// A translation table to generate the nice title/fieldnames. I don't believe count is being used.
-const facet_key: Record<string, { name: string; count: number }> = {
-  'author_sm': { name: 'Author', count: 5 },
-  'editor_sm': { name: 'Editor', count: 5 },
-  'lang_sm': { name: 'Language', count: 5 },
-  'ms_date_sm': { name: 'Century', count: 5 },
-  'ms_datecert_s': { name: 'Date Certainty', count: 5 },
-  'ms_origin_sm': { name: 'Origin', count: 5 },
-  'wk_subjects_sm': { name: 'Subjects', count: 999 },
-  'ms_materials_sm': { name: 'Materials', count: 5 },
-  'ms_decotype_sm': { name: 'Decoration', count: 5 },
-  'ms_music_b': { name: 'Musical Notation', count: 5 },
-  'ms_bindingdate_sm': { name: 'Binding Century', count: 5 },
-  'ms_digitized_s': { name: 'Digital Facsimile Online', count: 5 },
-  'ms_repository_s': { name: 'Repository', count: 5 },
-  'ms_collection_s': { name: 'Collection', count: 5 },
-  'ms_title_t': {name: 'Title', count: 5 },
-  'name_t': {name: 'Name', count: 5 }
-}
-
-// Define which variables are from the advanced search.
-// These can be used to output a 'Modify search' button.
-// This is not implemented in ms cat and likely will be removed from this iteration after the base code is committed.
-const advanced_params = [ 'ms_title_t', 'name_t' ]
-
-
-
-
-const core = computed(() => _get_first_value(route.query?.tc ?? null) === 'pages' ? 'pages' : 'items' )
-const sort = computed(() => _get_first_value(route.query?.sort ?? null) === 'title' ? 'title' : 'score' )
+const core = computed<'pages' | 'items'>(() => _get_first_value(route.query?.tc ?? null) === 'pages' ? 'pages' : 'items' )
+const sort = computed<'title' | 'score'>(() => _get_first_value(route.query?.sort ?? null) === 'title' ? 'title' : 'score' )
 
 // Only used in social Media links that likely won't appear in finished site.
-const fullpath_uriencoded = computed(() => encodeURIComponent(route.fullPath) )
+const fullpath_uriencoded = computed<string>(() => encodeURIComponent(route.fullPath) )
 
-const paginate_results = computed(() => total.value >= items_per_page )
+const paginate_results = computed<boolean>(() => total.value >= items_per_page )
 
 function get_current_page(): number {
   return ('page' in route.query && /^\d+$/.test(String(route.query['page']))) ? Number(route.query['page']): 1;
 }
 
-function _query_param_sort(key: string) {
-  // Sort facet params by facet title (if facet) or param name (if search term).
-  // Search terms are prefixed with 000_ to ensure they come first in the search
-  // terms display
-  return (key in facet_key) ? facet_key[key].name : "000_"+key
-}
-
-const all_params = computed(() => {
+const all_params = computed<Array<{ key: string; value: string }>>(() => {
   const excludeKeys: string[] = ['page']
   const result: { key: string; value: string }[] = []
 
@@ -106,13 +65,13 @@ const all_params = computed(() => {
   return result;
 });
 
-const filtering_params = computed(() => all_params.value.filter(item => !['sort'].includes(item.key)))
+const filtering_params = computed<Array<{ key: string; value: string }>>(() => all_params.value.filter(item => !['sort'].includes(item.key)))
 
-const filtering_params_string = computed(() => {
+const filtering_params_string = computed<string>(() => {
   return JSON.stringify(filtering_params.value)
 })
 
-const all_params_uri = computed(() =>{
+const all_params_uri = computed<string>(() =>{
   const result_array: string[] = []
   all_params.value.forEach((item: { key: string; value: string }) => {
     result_array.push(item.key + '=' + encodeURI(String(item.value)))
@@ -120,15 +79,15 @@ const all_params_uri = computed(() =>{
   return result_array.join('&')
 })
 
-const keyword_string = computed(() => {
+const keyword_string = computed<string>(() => {
   return all_params.value.filter(item => item.key === 'keyword')
       .map(item => item.value)
       .join(' ')
 })
 
-const advanced_query_string = computed(() => {
+const advanced_query_string = computed<string>(() => {
   const result: Record<string, string[]> = {}
-    all_params.value.filter(item => advanced_params.includes(item.key)).forEach((item) => {
+    all_params.value.filter(item => implementation.advanced_params.includes(item.key)).forEach((item) => {
       if (result[item.key]) {
         result[item.key].push(item.value);
       } else {
@@ -140,7 +99,7 @@ const advanced_query_string = computed(() => {
 })
 
 function get_facet_header(str: string) {
-  return (str in facet_key ) ? facet_key[str]['name']: str
+  return (str in implementation.facet_key ) ? implementation.facet_key[str]['name']: str
 }
 
 function throw_error(error: string) {
@@ -151,7 +110,7 @@ function throw_error(error: string) {
 }
 
 const updateURL = async (page: number): Promise<void> => {
-  console.log('Moving to page ' + page)
+  _tracer_bullet('Moving to page ' + page)
 
   await router.push({
     name: 'search',
@@ -166,8 +125,8 @@ async function fetchData(start: number) {
     control_params.push('page=' + start)
   }
 
-  const url = api_url + '/' + core.value + '?' + all_params_uri.value + '&' + control_params.join('&')
-  console.log("Trying " + url)
+  const url = implementation.api_url + '/' + core.value + '?' + all_params_uri.value + '&' + control_params.join('&')
+  _tracer_bullet("Trying " + url)
 
   try {
     const response = await fetch(url, {
@@ -181,7 +140,7 @@ async function fetchData(start: number) {
     }
 
     const data = await response.json();
-    console.log(data);
+    _tracer_bullet(data);
 
     // Handle highlighting if present
      if (data?.highlighting) {
@@ -204,7 +163,7 @@ async function fetchData(start: number) {
 
       // Clean and format facets
       const facetsCleaned: Record<string, unknown[]> = Object.fromEntries(
-        desired_facets.map(key => [
+        implementation.desired_facets.map(key => [
           key,
           (data.facet_counts?.facet_fields?.[key] ?? []).reduce(
             (acc: unknown[], val: string, idx: number, arr: unknown[]) =>
@@ -247,10 +206,10 @@ onBeforeMount(async () => {
         <div class="region-sidebar">
           <div class="cudl-results sidebar-results-list">
             <facet-block
-              v-for="facet in desired_facets"
+              v-for="facet in implementation.desired_facets"
               :desired_facet="facet"
               :facets="facets"
-              :facet_key="facet_key"
+              :facet_key="implementation.facet_key"
               :params="all_params"
               :key="filtering_params_string+'::'+facet"
             />

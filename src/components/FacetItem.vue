@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import escape from 'core-js/actual/regexp/escape'
-import { _params_to_query_structure, cancel_link } from '@/lib/utils';
+import { _params_to_query_structure, cancel_link, _query_param_sort } from '@/lib/utils';
 
 const props = defineProps({
   facet: { type: Object as () => { val: string; count: number }, required: true },
@@ -13,7 +13,7 @@ const props = defineProps({
   show: {type: Boolean, required: true},
 })
 
-const mapped_param_name = computed(() => {
+const mapped_param_name = computed<string>(() => {
   let result = props.param_name
   if (/f\d+-(year|year-month|year-month-day)$/.test(props.param_name)) {
     result = 'f1-date'
@@ -21,7 +21,7 @@ const mapped_param_name = computed(() => {
   return result
 })
 
-const is_selected = computed(() => {
+const is_selected = computed<boolean>(() => {
   const value: string = props.facet.val
   return (props.current_selections.some(
       (e: string) => {
@@ -33,34 +33,7 @@ const is_selected = computed(() => {
     ))
   })
 
-// Extract to common library
-const facet_key: Record<string, { name: string; count: number }> = {
-  'author_sm': { name: 'Author', count: 5 },
-  'editor_sm': { name: 'Editor', count: 5 },
-  'lang_sm': { name: 'Language', count: 5 },
-  'ms_date_sm': { name: 'Century', count: 5 },
-  'ms_datecert_s': { name: 'Date Certainty', count: 5 },
-  'ms_origin_sm': { name: 'Origin', count: 5 },
-  'wk_subjects_sm': { name: 'Subjects', count: 999 },
-  'ms_materials_sm': { name: 'Materials', count: 5 },
-  'ms_decotype_sm': { name: 'Decoration', count: 5 },
-  'ms_music_b': { name: 'Musical Notation', count: 5 },
-  'ms_bindingdate_sm': { name: 'Binding Century', count: 5 },
-  'ms_digitized_s': { name: 'Digital Facsimile Online', count: 5 },
-  'ms_repository_s': { name: 'Repository', count: 5 },
-  'ms_collection_s': { name: 'Collection', count: 5 },
-}
-
-// Extract to common library
-function _query_param_sort(key: string) {
-  // Sort facet params by facet title (if facet) or param name (if search term).
-  // Search terms are prefixed with 000_ to ensure they come first in the search
-  // terms display
-  return (key in facet_key) ? facet_key[key].name : "000_"+key
-}
-
-
-const new_facet_params = computed(() => {
+const new_facet_params = computed<Record<string, string[]>>(() => {
   const param_array: { key: string; value: string }[] = [...props.params]
   param_array.push({key: props.param_name, value: props.facet.val})
 
