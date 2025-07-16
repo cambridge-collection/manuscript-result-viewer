@@ -33,7 +33,7 @@
       #keyboardInputMaster * {
           font-size: 0.9rem !important;
       }
-      
+
 
 
 
@@ -144,3 +144,14 @@
 .individual-item .underline {text-decoration:underline}
 .individual-item .overline {text-decoration:overline}
 .individual-item .strikethrough {text-decoration:line-through}
+
+.layoutDesc p + p {
+    margin-top: 1.5rem;
+}
+
+.individual-item p:last-child {
+    margin-bottom: 0.625rem;
+}
+
+.layoutDesc span.note, .layoutDesc span.seg {display:block;margin-top:0; margin-bottom:0}
+
