@@ -7,7 +7,7 @@ import NoResults from '@/components/NoResults.vue';
 import 'vue-awesome-paginate/dist/style.css';
 import { CSpinner } from '@coreui/vue';
 import 'material-icons/iconfont/filled.css';
-import { cancel_link, _get_first_value,_query_param_sort, _tracer_bullet } from '@/lib/utils';
+import { cancel_link, _get_first_value, _query_param_sort, _tracer_bullet } from '@/lib/utils';
 import * as implementation from '@/implementationConfig'
 
 const router = useRouter();
