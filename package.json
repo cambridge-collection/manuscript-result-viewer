@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "ssg": "npx vite-ssg build",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -39,6 +40,7 @@
     "rollup-plugin-delete": "^2.1.0",
     "typescript": "~5.5.4",
     "vite": "^5.4.8",
+    "vite-ssg": "^25.2.0",
     "vue-tsc": "^2.1.6"
   }
 }

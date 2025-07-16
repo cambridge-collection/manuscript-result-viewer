@@ -1,10 +1,10 @@
 /* Define implementation settings */
 
 // Dev: https://mscat-dev-search.cudl-sandbox.net
-const api_url: string = "http://localhost"
+const api_url: string = "https://mscat-dev-search.cudl-sandbox.net"
 
 // Specify facets to be shown in the sidebar, displayed in array order.
-const desired_facets: string[] = [ 'lang_sm', 'ms_date_sm', 'ms_datecert_s', 'ms_origin_sm', 'author_sm', 'editor_sm', 'wk_subjects_sm', 'ms_materials_sm', 'ms_decotype_sm', 'ms_music_b', 'ms_bindingdate_sm', 'ms_digitized_s', 'ms_repository_s', 'ms_collection_s' ]
+const desired_facets: string[] = [ 'lang_sm', 'ms_date_sm', 'ms_datecert_s', 'ms_origin_sm', 'author_sm', 'ms_materials_sm', 'ms_decotype_sm', 'ms_music_b', 'ms_bindingdate_sm', 'ms_digitized_s', 'ms_repository_s', 'ms_collection_s' ]
 
 // A translation table to generate the nice title/fieldnames. I don't believe count is being used.
 const facet_key: Record<string, { name: string; count: number }> = {
@@ -26,6 +26,25 @@ const facet_key: Record<string, { name: string; count: number }> = {
   'name_t': {name: 'Name', count: 5 }
 }
 
+// Expandable facet blocks
+const expandable: string[] = [
+  'author',
+  'editor',
+  'language',
+  'century',
+  'date certainty',
+  'origin',
+  'subjects',
+  'materials',
+  'decoration',
+  'musical notation',
+  'binding century',
+  'digital facsimile online',
+  'repository',
+  'collection',
+]
+
+
 // Define which variables are from the advanced search.
 // These can be used to output a 'Modify search' button.
 // This is not implemented in ms cat and likely will be removed from this iteration after the base code is committed.
@@ -33,4 +52,4 @@ const advanced_params = [ 'ms_title_t', 'name_t' ]
 
 const debug:boolean = false;
 
-export {api_url, desired_facets, facet_key, advanced_params, debug}
+export {api_url, desired_facets, facet_key, expandable, advanced_params, debug}

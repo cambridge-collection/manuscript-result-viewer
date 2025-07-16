@@ -1,0 +1,206 @@
+<script setup lang="ts">
+import SearchBar from '@/components/SearchBar.vue'
+</script>
+
+<!-- src/layouts/DefaultLayout.vue -->
+<template>
+  <div class="campl-row campl-global-header">
+    <div class="campl-wrap clearfix">
+      <div class="campl-header-container campl-column8" id="global-header-controls" style="display: block;"><a href="" class="campl-open-menu ir" id="open-menu">View menu</a>
+        <a href="http://www.cam.ac.uk" class="campl-main-logo">
+          <img alt="University of Cambridge" src="/src/images/interface/main-logo-small.svg" height="38">
+        </a>
+        <!--<ul class="campl-unstyled-list campl-horizontal-navigation campl-global-navigation clearfix">
+          <li>
+            <a href="#study-with-us" style="min-height: 18px;">Study at Cambridge</a>
+          </li>
+          <li>
+            <a href="#about-the-university" style="min-height: 18px;">About the University</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/research" class="campl-no-drawer" style="min-height: 18px;">Research at Cambridge</a>
+          </li>
+        </ul>-->
+      </div>
+      <!--    <div class="campl-column2">
+            <div class="campl-quicklinks"><a href="#" class="campl-open-quicklinks clearfix"><span class="campl-quicklinks-txt">Quick links</span><span class="campl-icon-dropdown ir"></span></a>
+              <ul class="campl-unstyled-list campl-quicklinks-list campl-global-navigation-container  column12 clearfix">
+                <li>
+                  <a href="https://philanthropy.cam.ac.uk">Give to Cambridge</a>
+                </li>
+                <li>
+                  <a href="http://www.cam.ac.uk/for-staff">For staff</a>
+                </li>
+                <li>
+                  <a href="http://www.cam.ac.uk/current-students">For current students</a>
+                </li>
+                <li>
+                  <a href="http://www.alumni.cam.ac.uk">For alumni</a>
+                </li>
+                <li>
+                  <a href="http://www.cam.ac.uk/for-business">For business</a>
+                </li>
+                <li>
+                  <a href="http://www.cam.ac.uk/colleges-and-departments">Colleges &amp; departments</a>
+                </li>
+                <li>
+                  <a href="http://www.lib.cam.ac.uk/libraries/">Libraries &amp; facilities</a>
+                </li>
+                <li>
+                  <a href="http://www.cam.ac.uk/museums-and-collections">Museums &amp; collections</a>
+                </li>
+                <li class="last">
+                  <a href="http://www.cam.ac.uk/email-and-phone-search">Email &amp; phone search</a>
+                </li>
+              </ul></div>
+          </div>-->
+      <!--    <div class="campl-column2">
+
+            <div class="campl-site-search" id="site-search-btn"><a href="#" class="campl-icon-search-btn ir" id="open-search">Search</a>
+
+              <label for="header-search" class="hidden">Search site</label>
+              <div class="campl-search-input">
+                <form action="http://search.cam.ac.uk/web" method="get">
+                  <input id="header-search" type="text" name="query" value="" placeholder="Search">
+
+                  <input type="image" class="campl-search-submit " src="../images/interface/btn-search-header.png">
+                </form>
+              </div>
+            </div>
+          </div>-->
+    </div>
+  </div>
+  <div class="campl-row campl-page-header">
+    <div class="campl-wrap clearfix">
+      <div class="campl-column12">
+        <div class="campl-content-container">
+          <!--<div class="campl-breadcrumb">breadcrumb</div>-->
+          <h1 class="campl-page-title">Medieval Manuscripts Catalogue</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="campl-row campl-page-header">
+    <div class="campl-wrap clearfix campl-local-navigation" id="local-nav"><p class="campl-closed campl-menu-btn" id="menu-btn"><a href="#"><span>Menu</span> <span class="campl-menu-btn-arrow"></span></a></p>
+      <div class="campl-local-navigation-container">
+        <ul class="campl-unstyled-list campl-current">
+          <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title' }}" active-class="campl-selected">Home</router-link></li>
+          <li class="campl-top"><router-link to="/about" active-class="campl-selected">About</router-link></li>
+          <li class="campl-top"><router-link to="/help" active-class="campl-selected">Help</router-link></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <search-bar :keyword="''" />
+  <slot/>
+  <div class="campl-row campl-local-footer">
+    <div class="campl-wrap clearfix">
+      <div class="campl-column12">
+        <div class="campl-content-container">
+          <p>Digital Initiatives <br/>Cambridge University Library, West Road, Cambridge CB3 9DR, UK</p>
+          <p>Built using the <a href="https://cambridge-collection.github.io/">Cambridge Digital Collections Platform</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="campl-row campl-global-footer">
+      <div class="campl-wrap clearfix">
+        <div class="campl-column3 campl-footer-navigation" style="height: 232px;">
+          <div class="campl-content-container campl-footer-logo">
+            <img alt="University of Cambridge" src="/src/images/interface/main-logo-small.png" class="campl-scale-with-grid">
+            <p>© 2025 University of Cambridge</p>
+            <ul class="campl-unstyled-list campl-global-footer-links">
+              <li>
+                <a href="https://www.cam.ac.uk/about-the-university/contact-the-university?ucam-ref=global-footer">Contact the University</a>
+              </li>
+              <li>
+                <a href="https://www.cam.ac.uk/about-this-site/accessibility?ucam-ref=global-footer">Accessibility</a>
+              </li>
+              <li>
+                <a href="https://www.information-compliance.admin.cam.ac.uk/foi?ucam-ref=global-footer">Freedom of information</a>
+              </li>
+              <li>
+                <a href="https://www.cam.ac.uk/about-this-site/privacy-policy?ucam-ref=global-footer">Privacy policy and cookies</a>
+              </li>
+              <li>
+                <a href="https://www.registrarysoffice.admin.cam.ac.uk/governance-and-strategy/anti-slavery-and-anti-trafficking?ucam-ref=global-footer">Statement on Modern Slavery</a>
+              </li>
+              <li>
+                <a href="https://www.cam.ac.uk/about-this-site/terms-and-conditions?ucam-ref=global-footer">Terms and conditions</a>
+              </li>
+              <li>
+                <a href="https://www.cam.ac.uk/university-a-z?ucam-ref=global-footer">University A-Z</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="campl-column3 campl-footer-navigation" style="height: 232px;">
+          <div class="campl-content-container campl-navigation-list">
+
+            <div class="link-list">
+              <h3><a href="https://www.cam.ac.uk/study-at-cambridge?ucam-ref=global-footer">Study at Cambridge</a></h3>
+              <ul class="campl-unstyled-list">
+                <li>
+                  <a href="https://www.undergraduate.study.cam.ac.uk/?ucam-ref=global-footer">Undergraduate</a>
+                </li>
+                <li>
+                  <a href="https://www.postgraduate.study.cam.ac.uk?ucam-ref=global-footer">Postgraduate</a>
+                </li>
+                <li>
+                  <a href="https://www.ice.cam.ac.uk/?ucam-ref=global-footer">Continuing education</a>
+                </li>
+                <li>
+                  <a href="https://www.epe.admin.cam.ac.uk/?ucam-ref=global-footer">Executive and professional education</a>
+                </li>
+                <li>
+                  <a href="https://www.educ.cam.ac.uk/?ucam-ref=global-footer">Courses in education</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="campl-column3 campl-footer-navigation" style="height: 232px;">
+          <div class="campl-content-container campl-navigation-list">
+            <h3><a href="https://www.cam.ac.uk/about-the-university?ucam-ref=global-footer">About the University</a></h3>
+            <ul class="campl-unstyled-list campl-page-children">
+              <li>
+                <a href="https://www.cam.ac.uk/about-the-university/how-the-university-and-colleges-work?ucam-ref=global-footer">How the University
+                  and Colleges work</a>
+              </li>
+              <li>
+                <a href="https://www.philanthropy.cam.ac.uk/give-now?ucam-ref=global-footer">Give to Cambridge</a>
+              </li>
+              <li>
+                <a href="https://www.jobs.cam.ac.uk">Jobs</a>
+              </li>
+              <li>
+                <a href="https://map.cam.ac.uk/?ucam-ref=global-footer">Map</a>
+              </li>
+              <li>
+                <a href="https://www.cam.ac.uk/about-the-university/visiting-the-university?ucam-ref=global-footer">Visiting the University</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="campl-column3 campl-footer-navigation last" style="height: 232px;">
+          <div class="campl-content-container campl-navigation-list">
+            <h3><a href="https://www.cam.ac.uk/research?ucam-ref=global-footer">Research at Cambridge</a></h3>
+            <ul class="campl-unstyled-list">
+              <li>
+                <a href="https://www.cam.ac.uk/research/news?ucam-ref=global-footer">Research news</a>
+              </li>
+              <li>
+                <a href="https://www.cam.ac.uk/research/research-at-cambridge?ucam-ref=global-footer">About research at Cambridge</a>
+              </li>
+              <li>
+                <a href="https://www.cam.ac.uk/public-engagement?ucam-ref=global-footer">Public engagement</a>
+              </li>
+              <li>
+                <a href="https://www.cam.ac.uk/research/spotlight-on?ucam-ref=global-footer">Spotlight on...</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

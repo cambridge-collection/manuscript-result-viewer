@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { ref, computed, onBeforeMount } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute, stringifyQuery } from 'vue-router';
 import ResultItem from '@/components/ResultItem.vue';
 import FacetBlock from '@/components/FacetBlock.vue';
-import SearchBar from '@/components/SearchBar.vue';
 import NoResults from '@/components/NoResults.vue';
 import 'vue-awesome-paginate/dist/style.css';
 import { CSpinner } from '@coreui/vue';
@@ -46,18 +45,13 @@ const all_params = computed<Array<{ key: string; value: string }>>(() => {
         filteredValues.forEach(val => result.push({ key, value: val }));
       }
     } else if (typeof value === 'string' && value.trim().length > 0) {
-      // If value is a non-empty string, create a single entry
       result.push({ key, value });
     }
   }
 
-  // Sort by key, then by value
   result.sort((a, b) => {
-    // First compare by key
     const keyComparison = _query_param_sort(a.key).localeCompare(_query_param_sort(b.key));
     if (keyComparison !== 0) return keyComparison;
-
-    // If keys are the same, compare by value
     return a.value.localeCompare(b.value);
   });
 
@@ -179,8 +173,7 @@ async function fetchData(start: number) {
   }
 }
 
-onBeforeMount(async () => {
-  //console.log('Before')
+onMounted(async () => {
   window.scrollTo(0, 0)
   await fetchData(currentPage.value).then(() => {
     is_loading.value = false
@@ -189,8 +182,6 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <search-bar :keyword="keyword_string" />
-
   <div class="campl-row campl-content campl-recessed-content">
     <div class="campl-wrap clearfix">
       <div

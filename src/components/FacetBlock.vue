@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import FacetItem from '../components/FacetItem.vue'
 import { computed, ref } from 'vue'
+import * as implementation from '@/implementationConfig'
 
 const props = defineProps({
   desired_facet: { type: String, required: true },
@@ -34,23 +35,9 @@ const subfacets = computed(() => {
   }
 })
 
-const is_expandible = computed<boolean>(() => {
-  return [
-    'author',
-    'editor',
-    'language',
-    'century',
-    'date certainty',
-    'origin',
-    'subjects',
-    'materials',
-    'decoration',
-    'musical notation',
-    'binding century',
-    'digital facsimile online',
-    'repository',
-    'collection',
-  ].includes(name.value.toLowerCase())
+// Migrate to facet key in implementation config
+const is_expandable = computed<boolean>(() => {
+  return implementation.expandable.includes(name.value.toLowerCase())
 })
 
 const current_facet_selections = computed<string[]>(() => props.params
@@ -62,7 +49,7 @@ const current_facet_selections = computed<string[]>(() => props.params
   <div class="facet" v-if="has_entries">
     <h3 class="facetName" @click="() => (is_expanded = !is_expanded)">
       <span>{{ name }}</span>
-      <div class="facetMore" v-if="is_expandible && target_facets.length >= 5">
+      <div class="facetMore" v-if="is_expandable && target_facets.length > 5">
         <span class="material-icons" v-text="toggleText[is_expanded ? 1 : 0]" />
       </div>
     </h3>
@@ -72,7 +59,7 @@ const current_facet_selections = computed<string[]>(() => props.params
           <facetItem
             v-for="(facet, index) in target_facets"
             :facet="facet"
-            :show="index <= 4 || is_expanded"
+            :show="index < 5 || is_expanded"
             :param_name="desired_facet"
             :params="params"
             :current_selections="current_facet_selections"

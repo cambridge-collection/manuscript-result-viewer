@@ -1,16 +1,16 @@
-import { createApp } from 'vue'
-
+import { ViteSSG } from 'vite-ssg';
 import App from './App.vue'
-import router from './router'
+import { router, routes} from './router'
+
 import 'core-js/proposals/regexp-escaping'
 import VueAwesomePaginate from 'vue-awesome-paginate'
 import 'vue-awesome-paginate/dist/style.css'
 
 
-const app = createApp(App)
-app.use(VueAwesomePaginate)
-app.use(router)
-app.mount('#app')
-
-
-
+export const createApp = ViteSSG(
+  App,
+  { routes },
+  ({ app, router, isClient, initialState }) => {
+    app.use(VueAwesomePaginate);
+  }
+);

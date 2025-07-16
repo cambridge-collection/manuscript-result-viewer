@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
-import VirtualKeyboard from './VirtualKeyboard.vue';
+import { defineAsyncComponent } from 'vue';
+
+const VirtualKeyboard = defineAsyncComponent(() =>
+  import('./VirtualKeyboard.vue')
+);
 
 const props = defineProps({
   keyword: { type: String, required: true },
@@ -29,7 +33,7 @@ onMounted(() => {
 <!--          <input placeholder="Search manuscripts..." type="text" name="keyword" :value="props.keyword" class="form-text"/>-->
           <input type="submit" value="Search" class="form-submit campl-btn campl-primary-cta"/>
           <div class="advanced-search">
-            <div><a href="/advanced-search" class="campl-secondary-cta">advanced search ›</a></div>
+            <div><router-link :to="{ name: 'advanced-search'}" class="campl-secondary-cta">advanced search ›</router-link></div>
           </div>
         </form>
       </div>
