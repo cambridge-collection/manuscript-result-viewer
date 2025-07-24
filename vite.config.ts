@@ -3,16 +3,18 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { ViteSSGOptions } from 'vite-ssg';
+import fs from 'fs/promises'
+import path from 'path'
 
 const ssgOptions: ViteSSGOptions = {
   script: 'async',
   dirStyle: 'flat',
   includeAllRoutes: true,
-  /*includedRoutes(paths, routes) {
-    return paths.filter((path) => !path.includes('/search2'));
-  },*/
-
-  // Other options can be added here as needed.
+  onFinished: async () => {
+    const dir = path.resolve(process.cwd(), 'dist/.vite')
+    await fs.rm(dir, { recursive: true, force: true })
+    console.log('Removed dist/.vite')
+  }
 };
 
 
