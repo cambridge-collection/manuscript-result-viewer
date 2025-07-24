@@ -1,7 +1,7 @@
 /* Define implementation settings */
 
 // Dev: https://mscat-dev-search.cudl-sandbox.net
-const api_url: string = "https://mscat-dev-search.cudl-sandbox.net"
+const api_url: string = "https://search.medieval.lib.cam.ac.uk"
 
 // Specify facets to be shown in the sidebar, displayed in array order.
 const desired_facets: string[] = [ 'lang_sm', 'ms_date_sm', 'ms_datecert_s', 'ms_origin_sm', 'author_sm', 'ms_materials_sm', 'ms_decotype_sm', 'ms_music_b', 'ms_bindingdate_sm', 'ms_digitized_s', 'ms_repository_s', 'ms_collection_s' ]
