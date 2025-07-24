@@ -1,6 +1,6 @@
-# Darwin Search Results Viewer
+# MSCAT Search Results Viewer and Supporting Pages
 
-A Single File Component for [Vue.JS (v3)](https://vuejs.org/) for displaying search results from Darwin Search API.
+A Single File Component for [Vue.JS (v3)](https://vuejs.org/) for displaying search results from MSCAT Search API. It also is capable of generating the static HTML of the About, Advanced Search and Help pages.
 
 ## Installation
 
@@ -27,22 +27,16 @@ To run the component locally:
 The deployment is currently manual.
 
 1. Set `apiURL` to the appropriate search api for the environment.
-2. Run `npm run build` at the root level of this repository
+2. Run `npm run ssg` at the root level of this repository to build the entire site and generate static HTML for supporting pages.
 3. The outputs are written to `./dist`.
 4. Upload the outputs into the `./www` directory of the environment's release bucket.
 
-At present, the `dist` bucket should only contain:
-- `search.html`
-- `assets` directory containing:
-  - A javascript file called `SearchResults` with some random hash added as a suffix (_e.g._ `SearchResults-DeJz_Pi3.js`)
-  - a subdirectory called `cdcp-searchResults` containing two css files (`search.css` & `search2.css`) and one javascript file (`search.js`)
-
-**Do not deploy any of the outputs** if the build contains any other files or directories as this repository contains a partial selection of common assets included on the main site to make local testing easier. These resources *should* be automatically removed during the build process. They are not necessary because they are added to the bucket as part of the normal data build and release process for the TEI and Site HTML materials. 
+**Note:** Be sure not to erase `./catalog/` in the bucket. It contains the TEI html outputs of the data build process. 
 
 Should this directory contain additional assets, rebuilding should solve the problem.
 
-You may occasionally get an error that certain of these superfluous directories/resources can't be deleted towards the end of the build. This appears to be a transitory build error and is resolved simply by building the materials again.
-
 ## Notes on implementation
 
-The code is contained within `./src`. The Single Page Application has one route (`/search`) that is dealt with by `./src/views/SearchResults.vue`. `SearchResults.vue` incorporates a number of smaller components, contained in `./src/components/` to create the view.
+The code is contained within `./src`. The Single Page Application has three route (`/search`) that is dealt with by `./src/views/SearchResults.vue`. `SearchResults.vue` incorporates a number of smaller components, contained in `./src/components/` to create the view.
+
+The supplementary pages (About, Help, Advanced Search) are stored in `./pages`. All pages with active routes will be generated into static HTML for deployment.
