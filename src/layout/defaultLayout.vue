@@ -86,7 +86,7 @@ import SearchBar from '@/components/SearchBar.vue'
         <ul class="campl-unstyled-list campl-current">
           <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title' }}" active-class="campl-selected">Home</router-link></li>
           <li class="campl-top"><router-link to="/about" active-class="campl-selected">About</router-link></li>
-          <li class="campl-top"><router-link to="/help" active-class="campl-selected">Help</router-link></li>
+          <!--<li class="campl-top"><router-link to="/help" active-class="campl-selected">Help</router-link></li>-->
         </ul>
       </div>
     </div>
