@@ -89,7 +89,7 @@ const advanced_query_string = computed<string>(() => {
 })
 
 function get_facet_header(str: string) {
-  return (str in implementation.facet_key ) ? implementation.facet_key[str]['name']: str
+  return (str in implementation.param_labels) ? implementation.param_labels[str] : str
 }
 
 function throw_error(error: string) {

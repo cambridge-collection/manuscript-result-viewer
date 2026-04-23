@@ -42,7 +42,7 @@ function _query_param_sort(key: string) {
      Search terms are prefixed with 000_ to ensure they come first in the search
      terms display
    */
-  return (key in implementation.facet_key) ? implementation.facet_key[key].name : "000_"+key
+  return (key in implementation.param_labels) ? implementation.param_labels[key] : "000_"+key
 }
 
 function _tracer_bullet(msg: string): void {
