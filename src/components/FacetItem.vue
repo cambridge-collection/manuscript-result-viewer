@@ -8,8 +8,6 @@ const props = defineProps({
   param_name: { type: String, required: true },
   params: {type: Array as () => { key: string; value: string }[], required: true},
   current_selections: {type: Array as () => string[], required: true},
-  subfacets: { type: Object, required: true },
-  is_subgroup: { type: Boolean, required: true },
   show: {type: Boolean, required: true},
 })
 
@@ -51,32 +49,6 @@ const new_facet_params = computed<Record<string, string[]>>(() => {
   return result
 })
 
-const subgroupName = computed(() => {
-  let result = null
-  switch (props.param_name) {
-    case 'f1-year':
-      result = 'f1-year-month'
-      break
-    case 'f1-year-month':
-      result = 'f1-year-month-day'
-      break
-    default:
-  }
-  return result
-})
-
-const get_subgroup = computed(() => {
-  const tidied_val = props.facet.val.replaceAll(/^"(.+?)"$/g, '')
-  const val_pattern = new RegExp('^' + tidied_val + '::')
-  let result = []
-  if (subgroupName.value && subgroupName.value in props.subfacets) {
-    result = props.subfacets[subgroupName.value].filter((subfacet: any) =>
-      val_pattern.test(subfacet.val),
-    )
-  }
-  return result
-})
-
 const name = computed(() => {
   let value = props.facet.val.split('::').slice(-1)[0]
   if (
@@ -107,30 +79,6 @@ const name = computed(() => {
         <span class="material-icons">close</span>
       </router-link>
       <span v-else>({{ props.facet.count }})</span>
-    </td>
-  </tr>
-  <tr v-if="is_selected && subgroupName">
-    <td colspan="2">
-      <div
-        class="facetSubGroup"
-        v-if="is_selected && subgroupName"
-      >
-        <table>
-          <tbody>
-            <facetItem
-              v-for="sub in get_subgroup"
-              :facet="sub"
-              :param_name="subgroupName"
-              :subfacets="subfacets"
-              :show="show"
-              :current_selections="current_selections"
-              v-bind:params
-              v-bind:is_subgroup="true"
-              :key="JSON.stringify(sub)"
-            />
-          </tbody>
-        </table>
-      </div>
     </td>
   </tr>
 </template>

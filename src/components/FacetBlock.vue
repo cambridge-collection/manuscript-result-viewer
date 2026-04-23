@@ -28,13 +28,6 @@ const has_entries = computed<boolean>(() => {
   )
 })
 
-const subfacets = computed(() => {
-  return {
-    'f1-year-month': props.facets['f1-year-month'],
-    'f1-year-month-day': props.facets['f1-year-month-day'],
-  }
-})
-
 // Migrate to facet key in implementation config
 const is_expandable = computed<boolean>(() => {
   return implementation.expandable.includes(name.value.toLowerCase())
@@ -63,8 +56,6 @@ const current_facet_selections = computed<string[]>(() => props.params
             :param_name="desired_facet"
             :params="params"
             :current_selections="current_facet_selections"
-            :subfacets="subfacets"
-            v-bind:is_subgroup="false"
             :key="JSON.stringify(facet)"
           />
         </tbody>
