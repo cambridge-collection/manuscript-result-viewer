@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import FacetItem from '../components/FacetItem.vue'
 import { computed, ref } from 'vue'
-import * as implementation from '@/implementationConfig'
 
 const props = defineProps({
   desired_facet: { type: String, required: true },
@@ -29,7 +28,7 @@ const has_entries = computed<boolean>(() => {
 })
 
 const is_expandable = computed<boolean>(() => {
-  return implementation.expandable.includes(name.value.toLowerCase())
+  return props.facet_key[props.desired_facet]?.expandable === true
 })
 
 const current_facet_selections = computed<string[]>(() => props.params
