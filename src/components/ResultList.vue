@@ -110,6 +110,7 @@ const updateURL = async (page: number): Promise<void> => {
 
 async function fetchData(start: number) {
   commits.value = []
+  is_error.value = { bool: false, message: '' }
   const control_params = []
   if (start) {
     control_params.push('page=' + start)
@@ -142,23 +143,21 @@ async function fetchData(start: number) {
       }
     }
 
-    if (!is_error.value.bool) {
-      commits.value = data.response.docs;
-      total.value = data.response.numFound;
+    commits.value = data.response.docs;
+    total.value = data.response.numFound;
 
-      const facetsCleaned: Record<string, unknown[]> = Object.fromEntries(
-        implementation.desired_facets.map(key => [
-          key,
-          (data.facet_counts?.facet_fields?.[key] ?? []).reduce(
-            (acc: unknown[], val: string, idx: number, arr: unknown[]) =>
-              idx % 2 === 0 ? [...acc, { val, count: arr[idx + 1] }] : acc,
-            []
-          ),
-        ])
-      );
+    const facetsCleaned: Record<string, unknown[]> = Object.fromEntries(
+      implementation.desired_facets.map(key => [
+        key,
+        (data.facet_counts?.facet_fields?.[key] ?? []).reduce(
+          (acc: unknown[], val: string, idx: number, arr: unknown[]) =>
+            idx % 2 === 0 ? [...acc, { val, count: arr[idx + 1] }] : acc,
+          []
+        ),
+      ])
+    );
 
-      facets.value = facetsCleaned;
-    }
+    facets.value = facetsCleaned;
   } catch (error) {
     throw_error(error instanceof Error ? error.message : String(error));
   }
