@@ -29,13 +29,13 @@ function _is_equal_to(variable: string | string[] | null, targetValue: string): 
 }
 
 function _get_first_value(param: unknown): string | null {
-  let result: string = ''
-  if (Array.isArray(param)) {
-    result= String(param[0]);
-  } else {
-    result = String(param)
+  if (param === null || param === undefined) {
+    return null
   }
-  return result
+  if (Array.isArray(param)) {
+    return param.length === 0 ? null : String(param[0])
+  }
+  return String(param)
 }
 
 function _query_param_sort(key: string) {
