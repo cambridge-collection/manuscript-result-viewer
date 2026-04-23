@@ -15,7 +15,7 @@ const keyword_txt = computed(() =>{
   return props.keyword ? props.keyword : ''
 })
 
-const keyboardInput = ref(null);
+const keyboardInput = ref<HTMLInputElement | null>(null);
 
 onMounted(() => {
   const link = document.createElement('link');
