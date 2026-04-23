@@ -24,9 +24,6 @@ const currentPage = ref<number>(get_current_page());
 const core = computed<'pages' | 'items'>(() => _get_first_value(route.query?.tc ?? null) === 'pages' ? 'pages' : 'items' )
 const sort = computed<'title' | 'score'>(() => _get_first_value(route.query?.sort ?? null) === 'title' ? 'title' : 'score' )
 
-// Only used in social Media links that likely won't appear in finished site.
-const fullpath_uriencoded = computed<string>(() => encodeURIComponent(route.fullPath) )
-
 const paginate_results = computed<boolean>(() => total.value >= items_per_page )
 
 function get_current_page(): number {
@@ -212,44 +209,6 @@ onMounted(async () => {
         style="min-height: 100vh"
       >
         <div class="region region-content">
-          <div
-            id="block-darwin-sharing-darwin-sharing-add"
-            class="block block-darwin-sharing campl-content-container"
-          >
-            <div>
-              <div class="social-media-share">
-                <a
-                  class="icon-sm darwin-facebook"
-                  :href="
-                    'https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.darwinproject.ac.uk' +
-                    fullpath_uriencoded
-                  "
-                  title="Share on Facebook"
-                  target="_blank"
-                  ><i class="fab fa-facebook-f" aria-hidden="true"></i
-                ></a>
-                <a
-                  class="icon-sm darwin-twitter"
-                  :href="
-                    'https://twitter.com/intent/tweet?text=Search+results&amp;url=https%3A%2F%2Fwww.darwinproject.ac.uk' +
-                    fullpath_uriencoded
-                  "
-                  title="Share on Twitter"
-                  target="_blank"
-                  ><i class="fab fa-twitter" aria-hidden="true"></i
-                ></a>
-                <a
-                  class="icon-sm darwin-email"
-                  :href="
-                    'mailto:?&amp;subject=Search results&amp;body=https%3A%2F%2Fwww.darwinproject.ac.uk' +
-                    fullpath_uriencoded
-                  "
-                  title="Share by email"
-                  ><i class="fas fa-envelope" aria-hidden="true"></i
-                ></a>
-              </div>
-            </div>
-          </div>
           <div id="block-system-main" class="block block-system">
             <div class="darwin-search-results" v-show="is_loading">
               <CSpinner />
@@ -400,22 +359,8 @@ onMounted(async () => {
   min-height: 100vh;
 }
 
-.social-media-share a {
-  color: white;
-  display: inline-block;
-}
-
-.social-media-share a svg {
-  color: white;
-  vertical-align: text-top;
-}
-
 .campl-secondary-content {
   background: #003e74;
-}
-
-#block-darwin-sharing-darwin-sharing-add {
-  display: none;
 }
 
 em.match {
