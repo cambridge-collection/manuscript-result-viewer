@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+
 const props = defineProps({
   keyword: { type: String, required: true },
 })
+
+const router = useRouter()
 </script>
 
 <template>
@@ -32,11 +36,12 @@ const props = defineProps({
               type="submit"
               value="Search"
             />
-              <input
-                type="reset"
-                onclick="location.href='/search'"
-                value="Clear"
-              />
+              <button
+                type="button"
+                @click="router.push({ name: 'search' })"
+              >
+                Clear
+              </button>
             </td>
           </tr>
           <tr>
