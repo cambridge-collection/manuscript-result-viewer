@@ -64,12 +64,12 @@ const filtering_params_string = computed<string>(() => {
   return JSON.stringify(filtering_params.value)
 })
 
-const all_params_uri = computed<string>(() =>{
-  const result_array: string[] = []
+const all_params_uri = computed<string>(() => {
+  const params = new URLSearchParams()
   all_params.value.forEach((item: { key: string; value: string }) => {
-    result_array.push(item.key + '=' + encodeURI(String(item.value)))
+    params.append(item.key, item.value)
   })
-  return result_array.join('&')
+  return params.toString()
 })
 
 const keyword_string = computed<string>(() => {
