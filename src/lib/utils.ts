@@ -13,7 +13,6 @@ function _params_to_query_structure(param_array: { key: string; value: string }[
 }
 
 const cancel_link = (keyToRemove: string, valueToRemove: string, all_params: { key: string; value: string }[]): Record<string, string[]> => {
-  // Filter the array to remove the object with the matching key and value
   const filteredArr = all_params.filter(
     (item) =>
       !(item.key === keyToRemove && item.value.replace(/(^"|"$)/g, '') === valueToRemove.replace(/(^"|"$)/g, ''))

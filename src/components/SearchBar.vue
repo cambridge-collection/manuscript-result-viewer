@@ -11,12 +11,6 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  /*const plugin = document.createElement("script");
-  plugin.setAttribute(
-    "src",
-    "/src/lib/virtual-keyboard/keyboard.js"
-  );
-  document.getElementById('bb').appendChild(plugin);*/
 
 })
 
@@ -30,7 +24,6 @@ onMounted(() => {
           <div class="form-text">
             <virtual-keyboard :placeholder="'Search manuscripts...'" :keyword="props.keyword" :name="'keyword'"/>
           </div>
-<!--          <input placeholder="Search manuscripts..." type="text" name="keyword" :value="props.keyword" class="form-text"/>-->
           <input type="submit" value="Search" class="form-submit campl-btn campl-primary-cta"/>
           <div class="advanced-search">
             <div><router-link :to="{ name: 'advanced-search'}" class="campl-secondary-cta">advanced search ›</router-link></div>

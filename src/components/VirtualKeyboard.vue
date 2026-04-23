@@ -21,11 +21,11 @@ const keyboardInput = ref(null);
 onMounted(() => {
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = '/src/lib/virtual-keyboard/keyboard.css'; // Adjust the path as needed
+  link.href = '/src/lib/virtual-keyboard/keyboard.css';
   document.head.appendChild(link);
 
   const script = document.createElement('script');
-  script.src = '/src/lib/virtual-keyboard/keyboard.js'; // Adjust the path as needed
+  script.src = '/src/lib/virtual-keyboard/keyboard.js';
   script.onload = () => {
     if (window.VKI_attach) {
       window.VKI_attach(keyboardInput.value);

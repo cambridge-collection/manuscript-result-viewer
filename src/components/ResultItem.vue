@@ -46,30 +46,6 @@ const show_snippets = ref(false)
             </div>
           </div>
         </div>
-<!--        <div class="row" v-if="item.ms_materials_sm">
-          <div class="label">Material:</div>
-          <div class="content">
-            <div
-              v-for="(summary_item, index) in item.ms_materials_sm"
-              :index="index"
-              :key="JSON.stringify(summary_item)"
-            >
-              {{ summary_item }}
-            </div>
-          </div>
-        </div>
-        <div class="row" v-if="item.ms_decotype_sm">
-          <div class="label">Decoration:</div>
-          <div class="content">
-            <div
-              v-for="(summary_item, index) in item.ms_decotype_sm"
-              :index="index"
-              :key="JSON.stringify(summary_item)"
-            >
-              {{ summary_item }}
-            </div>
-          </div>
-        </div>-->
       </div>
     </div>
     <div

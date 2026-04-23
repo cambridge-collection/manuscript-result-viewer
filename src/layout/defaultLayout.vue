@@ -2,7 +2,6 @@
 import SearchBar from '@/components/SearchBar.vue'
 </script>
 
-<!-- src/layouts/DefaultLayout.vue -->
 <template>
   <div class="campl-row campl-global-header">
     <div class="campl-wrap clearfix">
@@ -10,71 +9,13 @@ import SearchBar from '@/components/SearchBar.vue'
         <a href="http://www.cam.ac.uk" class="campl-main-logo">
           <img alt="University of Cambridge" src="/src/images/interface/main-logo-small.svg" height="38">
         </a>
-        <!--<ul class="campl-unstyled-list campl-horizontal-navigation campl-global-navigation clearfix">
-          <li>
-            <a href="#study-with-us" style="min-height: 18px;">Study at Cambridge</a>
-          </li>
-          <li>
-            <a href="#about-the-university" style="min-height: 18px;">About the University</a>
-          </li>
-          <li>
-            <a href="http://www.cam.ac.uk/research" class="campl-no-drawer" style="min-height: 18px;">Research at Cambridge</a>
-          </li>
-        </ul>-->
       </div>
-      <!--    <div class="campl-column2">
-            <div class="campl-quicklinks"><a href="#" class="campl-open-quicklinks clearfix"><span class="campl-quicklinks-txt">Quick links</span><span class="campl-icon-dropdown ir"></span></a>
-              <ul class="campl-unstyled-list campl-quicklinks-list campl-global-navigation-container  column12 clearfix">
-                <li>
-                  <a href="https://philanthropy.cam.ac.uk">Give to Cambridge</a>
-                </li>
-                <li>
-                  <a href="http://www.cam.ac.uk/for-staff">For staff</a>
-                </li>
-                <li>
-                  <a href="http://www.cam.ac.uk/current-students">For current students</a>
-                </li>
-                <li>
-                  <a href="http://www.alumni.cam.ac.uk">For alumni</a>
-                </li>
-                <li>
-                  <a href="http://www.cam.ac.uk/for-business">For business</a>
-                </li>
-                <li>
-                  <a href="http://www.cam.ac.uk/colleges-and-departments">Colleges &amp; departments</a>
-                </li>
-                <li>
-                  <a href="http://www.lib.cam.ac.uk/libraries/">Libraries &amp; facilities</a>
-                </li>
-                <li>
-                  <a href="http://www.cam.ac.uk/museums-and-collections">Museums &amp; collections</a>
-                </li>
-                <li class="last">
-                  <a href="http://www.cam.ac.uk/email-and-phone-search">Email &amp; phone search</a>
-                </li>
-              </ul></div>
-          </div>-->
-      <!--    <div class="campl-column2">
-
-            <div class="campl-site-search" id="site-search-btn"><a href="#" class="campl-icon-search-btn ir" id="open-search">Search</a>
-
-              <label for="header-search" class="hidden">Search site</label>
-              <div class="campl-search-input">
-                <form action="http://search.cam.ac.uk/web" method="get">
-                  <input id="header-search" type="text" name="query" value="" placeholder="Search">
-
-                  <input type="image" class="campl-search-submit " src="../images/interface/btn-search-header.png">
-                </form>
-              </div>
-            </div>
-          </div>-->
     </div>
   </div>
   <div class="campl-row campl-page-header">
     <div class="campl-wrap clearfix">
       <div class="campl-column12">
         <div class="campl-content-container">
-          <!--<div class="campl-breadcrumb">breadcrumb</div>-->
           <h1 class="campl-page-title">Medieval Manuscripts Catalogue</h1>
         </div>
       </div>
@@ -86,7 +27,6 @@ import SearchBar from '@/components/SearchBar.vue'
         <ul class="campl-unstyled-list campl-current">
           <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title' }}" active-class="campl-selected">Home</router-link></li>
           <li class="campl-top"><router-link to="/about" active-class="campl-selected">About</router-link></li>
-          <!--<li class="campl-top"><router-link to="/help" active-class="campl-selected">Help</router-link></li>-->
         </ul>
       </div>
     </div>

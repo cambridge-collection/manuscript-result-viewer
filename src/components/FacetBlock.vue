@@ -28,7 +28,6 @@ const has_entries = computed<boolean>(() => {
   )
 })
 
-// Migrate to facet key in implementation config
 const is_expandable = computed<boolean>(() => {
   return implementation.expandable.includes(name.value.toLowerCase())
 })

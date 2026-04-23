@@ -132,15 +132,10 @@ async function fetchData(start: number) {
     const data = await response.json();
     _tracer_bullet(data);
 
-    // Handle highlighting if present
      if (data?.highlighting) {
       for (const doc of data.response.docs) {
         const id = doc.id;
-        // Use below if not checking for existence of highlighting before iterating docs
-        //const highlights = 'highlighting' in data? data.highlighting[id] : { _text_: [] };
-        // Use below instead of above if checking for existence of highlighting before iterating docs
         const highlights = data.highlighting[id] ?? { _text_: [] };
-        // Does this update data.response? It appears to.
         doc.highlighting = [
           ...new Set(Object.values(highlights).flat().filter(Boolean)),
         ];
@@ -151,7 +146,6 @@ async function fetchData(start: number) {
       commits.value = data.response.docs;
       total.value = data.response.numFound;
 
-      // Clean and format facets
       const facetsCleaned: Record<string, unknown[]> = Object.fromEntries(
         implementation.desired_facets.map(key => [
           key,
@@ -265,7 +259,6 @@ onMounted(async () => {
                           <div class="sort_by" v-if="total >= 1">
                             <span class="num_items" v-show="total >= 1">
                               <b>{{ total }}</b> item{{ total != 1 ? 's' : '' }}
-                              <!--<span v-if="Object.keys(sp).length > 0">found</span>-->
                               <span>found</span>
                             </span>
                             <form method="get" action="/search">
@@ -644,10 +637,6 @@ div.pages.false .pagination-container li:has(a.number-buttons) {
   #page-content li:has(a.paginate-buttons.number-buttons.active-page) {
     display: inherit;
   }
-
-  /*  li:has(a.paginate-buttons.number-buttons):nth-last-child(2), li:has(a.paginate-buttons.number-buttons):nth-child(2) {
-    display: inherit;
-  }*/
 
   ul#componentContainer .paginate-buttons {
     font-size: 0.7em;

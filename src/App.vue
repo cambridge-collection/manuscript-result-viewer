@@ -11,7 +11,6 @@ const layout = computed(() => {
 </script>
 
 <template>
-  <!--  :key="stringifyQuery($route.query)"  -->
   <component :is="layout">
     <RouterView :key="stringifyQuery($route.query)"/>
   </component>

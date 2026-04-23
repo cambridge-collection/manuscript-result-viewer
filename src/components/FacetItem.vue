@@ -36,11 +36,9 @@ const new_facet_params = computed<Record<string, string[]>>(() => {
   param_array.push({key: props.param_name, value: props.facet.val})
 
   param_array.sort((a, b) => {
-    // First compare by key
     const keyComparison = _query_param_sort(a.key).localeCompare(_query_param_sort(b.key));
     if (keyComparison !== 0) return keyComparison;
 
-    // If keys are the same, compare by value
     return a.value.localeCompare(b.value);
   });
 
