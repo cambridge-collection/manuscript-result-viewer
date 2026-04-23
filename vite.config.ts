@@ -33,7 +33,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        app: './index.html', // default
+        app: './search.html',
       },
       output: {
         //dir: 'assets/cdcp-searchResults',
