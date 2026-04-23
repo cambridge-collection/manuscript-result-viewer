@@ -147,12 +147,12 @@ async function fetchData(start: number) {
     commits.value = data.response.docs;
     total.value = data.response.numFound;
 
-    const facetsCleaned: Record<string, unknown[]> = Object.fromEntries(
+    const facetsCleaned: Record<string, { val: string; count: number }[]> = Object.fromEntries(
       implementation.desired_facets.map(key => [
         key,
-        (data.facet_counts?.facet_fields?.[key] ?? []).reduce(
-          (acc: unknown[], val: string, idx: number, arr: unknown[]) =>
-            idx % 2 === 0 ? [...acc, { val, count: arr[idx + 1] }] : acc,
+        ((data.facet_counts?.facet_fields?.[key] ?? []) as (string | number)[]).reduce(
+          (acc: { val: string; count: number }[], val, idx, arr) =>
+            idx % 2 === 0 ? [...acc, { val: val as string, count: arr[idx + 1] as number }] : acc,
           []
         ),
       ])
