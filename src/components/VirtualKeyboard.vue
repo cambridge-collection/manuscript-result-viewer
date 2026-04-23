@@ -15,7 +15,6 @@ const keyword_txt = computed(() =>{
   return props.keyword ? props.keyword : ''
 })
 
-declare const window: any;
 const keyboardInput = ref(null);
 
 onMounted(() => {
@@ -27,7 +26,7 @@ onMounted(() => {
   const script = document.createElement('script');
   script.src = '/src/lib/virtual-keyboard/keyboard.js';
   script.onload = () => {
-    if (window.VKI_attach) {
+    if (window.VKI_attach && keyboardInput.value) {
       window.VKI_attach(keyboardInput.value);
     } else {
       console.error('VKI_attach function is not available.');

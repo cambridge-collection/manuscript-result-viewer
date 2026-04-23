@@ -1,5 +1,6 @@
-declare module './VirtualKeyboard.vue' {
+declare global {
   interface Window {
-    VKI_attach: (inputElement: HTMLElement) => void;
+    VKI_attach?: (el: HTMLElement) => void
   }
 }
+export {}
