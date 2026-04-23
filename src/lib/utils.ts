@@ -21,12 +21,6 @@ const cancel_link = (keyToRemove: string, valueToRemove: string, all_params: { k
   return _params_to_query_structure(filteredArr);
 };
 
-function _is_equal_to(variable: string | string[] | null, targetValue: string): boolean {
-  return (typeof variable === "string" && variable === targetValue) ||
-    (Array.isArray(variable) && variable.length === 1 && variable[0] === targetValue) ||
-    (variable === null && targetValue === "");
-}
-
 function _get_first_value(param: unknown): string | null {
   if (param === null || param === undefined) {
     return null
@@ -49,4 +43,4 @@ function _tracer_bullet(msg: string): void {
   if (implementation.debug) { console.log(msg)}
 }
 
-export { _params_to_query_structure, cancel_link, _is_equal_to, _get_first_value, _query_param_sort, _tracer_bullet};
+export { _params_to_query_structure, cancel_link, _get_first_value, _query_param_sort, _tracer_bullet};
