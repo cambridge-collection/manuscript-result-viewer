@@ -116,7 +116,8 @@ async function fetchData(start: number) {
     control_params.push('page=' + start)
   }
 
-  const url = implementation.api_url + '/' + core.value + '?' + all_params_uri.value + '&' + control_params.join('&')
+  const control_suffix = control_params.length ? '&' + control_params.join('&') : ''
+  const url = implementation.api_url + '/' + core.value + '?' + all_params_uri.value + control_suffix
   _tracer_bullet("Trying " + url)
 
   try {
