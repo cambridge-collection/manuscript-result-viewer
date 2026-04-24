@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue'
 import { defineAsyncComponent } from 'vue';
 
 const VirtualKeyboard = defineAsyncComponent(() =>
@@ -9,11 +8,6 @@ const VirtualKeyboard = defineAsyncComponent(() =>
 const props = defineProps({
   keyword: { type: String, required: true },
 })
-
-onMounted(() => {
-
-})
-
 </script>
 
 <template>
