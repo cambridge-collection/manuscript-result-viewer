@@ -43,4 +43,8 @@ function _tracer_bullet(msg: string): void {
   if (implementation.debug) { console.log(msg)}
 }
 
-export { _params_to_query_structure, cancel_link, _get_first_value, _query_param_sort, _tracer_bullet};
+function _regexp_escape(s: string): string {
+  return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
+}
+
+export { _params_to_query_structure, cancel_link, _get_first_value, _query_param_sort, _tracer_bullet, _regexp_escape};

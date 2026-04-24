@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import escape from 'core-js/actual/regexp/escape'
-import { _params_to_query_structure, cancel_link, _query_param_sort } from '@/lib/utils';
+import { _params_to_query_structure, cancel_link, _query_param_sort, _regexp_escape } from '@/lib/utils';
 
 const props = defineProps({
   facet: { type: Object as () => { val: string; count: number }, required: true },
@@ -24,7 +23,7 @@ const is_selected = computed<boolean>(() => {
   return (props.current_selections.some(
       (e: string) => {
         const para_val: string = String(e).replaceAll(/^"(.+?)"$/g, '$1')
-        const re = new RegExp("^"+ escape(value) +'::')
+        const re = new RegExp("^"+ _regexp_escape(value) +'::')
 
         return para_val == value || re.test(para_val)
       }
