@@ -13,13 +13,12 @@ const show_snippets = ref(false)
 <template>
   <div
     :id="'main_' + index"
-    :class="
-      item['facet-document-type'] + ' docHit search-result-item has-summary'
-    "
+    :class="item.type + ' docHit search-result-item has-summary'"
   >
     <div>
       <h2 class="item-title">
-        <a :href="'/catalog/' + item.root_filename_s">{{ item.title }}</a>
+        <!-- person/work docs have no root_filename_s; they link by authority id -->
+        <a :href="'/catalog/' + (item.root_filename_s ?? item.id)">{{ item.title }}</a>
       </h2>
       <div class="table">
         <div class="row" v-if="item.ms_oldshelfmarks_smni">

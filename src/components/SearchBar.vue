@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
+import { useRoute } from 'vue-router';
+import { _get_first_value } from '@/lib/utils';
 
 const VirtualKeyboard = defineAsyncComponent(() =>
   import('./VirtualKeyboard.vue')
@@ -8,6 +10,20 @@ const VirtualKeyboard = defineAsyncComponent(() =>
 const props = defineProps({
   keyword: { type: String, required: true },
 })
+
+const route = useRoute()
+
+const current_type = computed<string | null>(() => _get_first_value(route.query.type ?? null))
+
+const type_placeholders: Record<string, string> = {
+  manuscript: 'Search manuscripts...',
+  person: 'Search people/organisations...',
+  work: 'Search works...',
+}
+
+const placeholder = computed<string>(() =>
+  (current_type.value && type_placeholders[current_type.value]) || 'Search manuscripts...'
+)
 </script>
 
 <template>
@@ -16,8 +32,9 @@ const props = defineProps({
       <div class="campl-content-container">
         <form action="/search" method="get" accept-charset="UTF-8" class="global_search">
           <div class="form-text">
-            <virtual-keyboard :placeholder="'Search manuscripts...'" :keyword="props.keyword" :name="'keyword'"/>
+            <virtual-keyboard :placeholder="placeholder" :keyword="props.keyword" :name="'keyword'"/>
           </div>
+          <input v-if="current_type" type="hidden" name="type" :value="current_type"/>
           <input type="submit" value="Search" class="form-submit campl-btn campl-primary-cta"/>
           <div class="advanced-search">
             <div><router-link :to="{ name: 'advanced-search'}" class="campl-secondary-cta">advanced search ›</router-link></div>

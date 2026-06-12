@@ -1,8 +1,18 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import SearchBar from '@/components/SearchBar.vue'
+import { _get_first_value } from '@/lib/utils'
 
 const route = useRoute()
+
+// vue-router ignores the query string when deciding link activeness, so the
+// /search nav links derive their own active state from the type filter.
+const current_type = computed<string | null>(() => _get_first_value(route.query.type ?? null))
+
+function nav_class(type: string): string {
+  return route.path === '/search' && current_type.value === type ? 'campl-selected' : ''
+}
 </script>
 
 <template>
@@ -29,6 +39,9 @@ const route = useRoute()
       <div class="campl-local-navigation-container">
         <ul class="campl-unstyled-list campl-current">
           <li class="campl-top"><router-link to="/" :class="route.path === '/' ? 'campl-selected' : ''">Home</router-link></li>
+          <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'manuscript' }}" :class="nav_class('manuscript')">Manuscripts</router-link></li>
+          <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'work' }}" :class="nav_class('work')">Works</router-link></li>
+          <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'person' }}" :class="nav_class('person')">People</router-link></li>
           <li class="campl-top"><router-link to="/about" active-class="campl-selected">About</router-link></li>
         </ul>
       </div>
