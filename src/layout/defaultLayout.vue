@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
 import SearchBar from '@/components/SearchBar.vue'
+
+const route = useRoute()
 </script>
 
 <template>
@@ -25,7 +28,7 @@ import SearchBar from '@/components/SearchBar.vue'
     <div class="campl-wrap clearfix campl-local-navigation" id="local-nav"><p class="campl-closed campl-menu-btn" id="menu-btn"><a href="#"><span>Menu</span> <span class="campl-menu-btn-arrow"></span></a></p>
       <div class="campl-local-navigation-container">
         <ul class="campl-unstyled-list campl-current">
-          <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title' }}" active-class="campl-selected">Home</router-link></li>
+          <li class="campl-top"><router-link to="/" :class="route.path === '/' ? 'campl-selected' : ''">Home</router-link></li>
           <li class="campl-top"><router-link to="/about" active-class="campl-selected">About</router-link></li>
         </ul>
       </div>
