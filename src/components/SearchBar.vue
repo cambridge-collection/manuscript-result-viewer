@@ -21,8 +21,12 @@ const type_placeholders: Record<string, string> = {
   work: 'Search works...',
 }
 
+const is_home = computed<boolean>(() => route.name === 'home')
+
 const placeholder = computed<string>(() =>
-  (current_type.value && type_placeholders[current_type.value]) || 'Search manuscripts...'
+  is_home.value
+    ? 'Search...'
+    : (current_type.value && type_placeholders[current_type.value]) || 'Search manuscripts...'
 )
 </script>
 
