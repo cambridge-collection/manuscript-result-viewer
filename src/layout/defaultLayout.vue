@@ -42,6 +42,7 @@ function nav_class(type: string): string {
           <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'manuscript' }}" :class="nav_class('manuscript')">Manuscripts</router-link></li>
           <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'work' }}" :class="nav_class('work')">Works</router-link></li>
           <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'person' }}" :class="nav_class('person')">People</router-link></li>
+          <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'place' }}" :class="nav_class('place')">Places</router-link></li>
           <li class="campl-top"><router-link to="/about" active-class="campl-selected">About</router-link></li>
         </ul>
       </div>

@@ -19,6 +19,7 @@ const type_placeholders: Record<string, string> = {
   manuscript: 'Search manuscripts...',
   person: 'Search people/organisations...',
   work: 'Search works...',
+  place: 'Search places...',
 }
 
 const is_home = computed<boolean>(() => route.name === 'home')
