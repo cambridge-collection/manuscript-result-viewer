@@ -6,11 +6,12 @@ const api_url: string = "http://localhost"
 // Specify facets to be shown in the sidebar, displayed in array order.
 // wk_subjects_sm and roles_sm only return counts once the index/API expose
 // them; FacetBlock hides facets with no entries in the meantime.
-const desired_facets: string[] = [ 'lang_sm', 'ms_date_sm', 'author_sm', 'wk_subjects_sm', 'ms_materials_sm', 'ms_decotype_sm', 'ms_bindingdate_sm', 'ms_digitized_s', 'ms_repository_s', 'ms_collection_s', 'roles_sm' ]
+const desired_facets: string[] = [ 'facet-title-initial', 'lang_sm', 'ms_date_sm', 'author_sm', 'wk_subjects_sm', 'ms_materials_sm', 'ms_decotype_sm', 'ms_bindingdate_sm', 'ms_digitized_s', 'ms_repository_s', 'ms_collection_s', 'roles_sm' ]
 
 // Sidebar facet metadata. `count` is currently unused. `expandable` controls
 // whether the facet block collapses entries beyond the first 5.
 const facet_key: Record<string, { name: string; count: number; expandable?: boolean }> = {
+  'facet-title-initial': { name: 'Initial letter', count: 5, expandable: true },
   'author_sm': { name: 'Author', count: 5, expandable: true },
   'lang_sm': { name: 'Language', count: 5, expandable: true },
   'ms_date_sm': { name: 'Century', count: 5, expandable: true },
