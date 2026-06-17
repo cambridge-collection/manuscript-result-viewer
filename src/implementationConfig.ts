@@ -23,6 +23,7 @@ const facet_key: Record<string, { name: string; count: number; expandable?: bool
   'ms_digitized_s': { name: 'Digital Facsimile Online', count: 5, expandable: true },
   'ms_repository_s': { name: 'Repository', count: 5, expandable: true },
   'ms_collection_s': { name: 'Collection', count: 5, expandable: true },
+  'institution_sm': { name: 'Institution', count: 5 },
 }
 
 // Display labels for advanced-search fieldnames. These are not facets but their

@@ -6,7 +6,7 @@ import * as implementation from '@/implementationConfig'
 
 type FacetEntry = { val: string; count: number }
 
-const repositories = ref<FacetEntry[]>([])
+const institutions = ref<FacetEntry[]>([])
 const collections = ref<FacetEntry[]>([])
 const is_loading = ref<boolean>(true)
 const is_error = ref<{ bool: boolean; message: string }>({ bool: false, message: '' })
@@ -40,7 +40,7 @@ onMounted(async () => {
     _tracer_bullet(data)
 
     const facet_fields = (data.facet_counts?.facet_fields ?? {}) as Record<string, (string | number)[]>
-    repositories.value = parse_facet(facet_fields, 'facet-repository')
+    institutions.value = parse_facet(facet_fields, 'institution_sm')
     collections.value = parse_facet(facet_fields, 'facet-collection')
   } catch (error) {
     is_error.value = { bool: true, message: error instanceof Error ? error.message : String(error) }
@@ -64,17 +64,17 @@ onMounted(async () => {
             <p>Please try again in a few minutes</p>
           </div>
           <div v-show="!is_loading && !is_error.bool">
-            <section class="browse-section" v-if="repositories.length > 0">
+            <section class="browse-section" v-if="institutions.length > 0">
               <h2>Repositories</h2>
               <ul class="browse-buttons campl-unstyled-list">
-                <li v-for="repository in repositories" :key="repository.val">
+                <li v-for="institution in institutions" :key="institution.val">
                   <router-link
                     :to="{
                       name: 'search',
-                      query: { type: 'manuscript', ms_repository_s: repository.val, page: '1' },
+                      query: { type: 'manuscript', institution_sm: institution.val, page: '1' },
                     }"
                   >
-                    {{ repository.val }}
+                    {{ institution.val }}
                   </router-link>
                 </li>
               </ul>
