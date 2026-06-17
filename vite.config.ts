@@ -22,19 +22,6 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    {
-      // No index.html exists (the entry was renamed to search.html), so the dev
-      // server can't serve the home route on direct load; hand it search.html
-      // as the SSG build does. Other routes (/about etc.) 404 deliberately.
-      name: 'serve-home-route-in-dev',
-      apply: 'serve',
-      configureServer(server) {
-        server.middlewares.use((req, _res, next) => {
-          if ((req.url ?? '').split('?')[0] === '/') req.url = '/search.html'
-          next()
-        })
-      },
-    },
   ],
   ssgOptions,
   resolve: {
@@ -46,7 +33,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        app: './search.html',
+        app: './index.html',
       },
       output: {
         //dir: 'assets/cdcp-searchResults',
