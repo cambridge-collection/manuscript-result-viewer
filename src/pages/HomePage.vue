@@ -6,7 +6,7 @@ import * as implementation from '@/implementationConfig'
 
 type FacetEntry = { val: string; count: number }
 
-const institutions = ref<FacetEntry[]>([])
+const repositories = ref<FacetEntry[]>([])
 const collections = ref<FacetEntry[]>([])
 const is_loading = ref<boolean>(true)
 const is_error = ref<{ bool: boolean; message: string }>({ bool: false, message: '' })
@@ -42,7 +42,7 @@ onMounted(async () => {
     _tracer_bullet(data)
 
     const facet_fields = (data.facet_counts?.facet_fields ?? {}) as Record<string, (string | number)[]>
-    institutions.value = parse_facet(facet_fields, 'institution_sm')
+    repositories.value = parse_facet(facet_fields, 'ms_repository_s')
     if (!suppress_collection_panels) {
       collections.value = parse_facet(facet_fields, 'facet-collection')
     }
@@ -68,17 +68,17 @@ onMounted(async () => {
             <p>Please try again in a few minutes</p>
           </div>
           <div v-show="!is_loading && !is_error.bool">
-            <section class="browse-section" v-if="institutions.length > 0">
+            <section class="browse-section" v-if="repositories.length > 0">
               <h2>Repositories</h2>
               <ul class="browse-buttons campl-unstyled-list">
-                <li v-for="institution in institutions" :key="institution.val">
+                <li v-for="repository in repositories" :key="repository.val">
                   <router-link
                     :to="{
                       name: 'search',
-                      query: { type: 'manuscript', institution_sm: institution.val, page: '1' },
+                      query: { type: 'manuscript', ms_repository_s: repository.val, page: '1' },
                     }"
                   >
-                    {{ institution.val }}
+                    {{ repository.val }}
                   </router-link>
                 </li>
               </ul>
