@@ -11,6 +11,8 @@ const collections = ref<FacetEntry[]>([])
 const is_loading = ref<boolean>(true)
 const is_error = ref<{ bool: boolean; message: string }>({ bool: false, message: '' })
 
+const suppress_collection_panels = import.meta.env.VITE_SUPPRESS_COLLECTION_PANELS === 'true'
+
 // Solr facets arrive as a flat alternating [value, count, value, count, ...] array
 function parse_facet(facet_fields: Record<string, (string | number)[]>, key: string): FacetEntry[] {
   return (facet_fields[key] ?? []).reduce(
@@ -41,7 +43,9 @@ onMounted(async () => {
 
     const facet_fields = (data.facet_counts?.facet_fields ?? {}) as Record<string, (string | number)[]>
     institutions.value = parse_facet(facet_fields, 'institution_sm')
-    collections.value = parse_facet(facet_fields, 'facet-collection')
+    if (!suppress_collection_panels) {
+      collections.value = parse_facet(facet_fields, 'facet-collection')
+    }
   } catch (error) {
     is_error.value = { bool: true, message: error instanceof Error ? error.message : String(error) }
     console.log(error)
@@ -79,7 +83,7 @@ onMounted(async () => {
                 </li>
               </ul>
             </section>
-            <section class="browse-section" v-if="collections.length > 0">
+            <section class="browse-section" v-if="!suppress_collection_panels && collections.length > 0">
               <h2>Collections</h2>
               <ul class="browse-buttons campl-unstyled-list">
                 <li v-for="collection in collections" :key="collection.val">

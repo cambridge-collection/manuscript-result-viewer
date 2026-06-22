@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "VITE_SUPPRESS_COLLECTION_PANELS=true vite",
     "ssg": "npx vite-ssg build",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
