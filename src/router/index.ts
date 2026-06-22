@@ -1,12 +1,13 @@
 import { createRouter, createMemoryHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router';
+import { show_homepage } from '@/featureFlags'
+
+const home_route: RouteRecordRaw = show_homepage
+  ? { path: '/', name: 'home', component: () => import('../pages/HomePage.vue') }
+  : { path: '/', redirect: { name: 'search', query: { sort: 'title' } } }
 
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'home',
-    component: () => import('../pages/HomePage.vue'),
-  },
+  home_route,
   {
     path: '/search',
     name: 'search',

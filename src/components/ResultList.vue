@@ -9,6 +9,7 @@ import { CSpinner } from '@coreui/vue';
 import 'material-icons/iconfont/filled.css';
 import { cancel_link, _get_first_value, _query_param_sort, _tracer_bullet } from '@/lib/utils';
 import * as implementation from '@/implementationConfig'
+import { show_works, show_people, show_places } from '@/featureFlags'
 
 const router = useRouter();
 const route = useRoute();
@@ -25,6 +26,15 @@ const core = computed<'pages' | 'items'>(() => _get_first_value(route.query?.tc 
 const sort = computed<'title' | 'score'>(() => _get_first_value(route.query?.sort ?? null) === 'title' ? 'title' : 'score' )
 
 const paginate_results = computed<boolean>(() => total.value >= items_per_page )
+
+// The initial-letter facet only browses non-manuscript records, so hide it
+// unless at least one of works/people/places is enabled.
+const visible_facets = computed<string[]>(() => {
+  const show_initial = show_works || show_people || show_places
+  return implementation.desired_facets.filter(
+    facet => show_initial || facet !== 'facet-title-initial'
+  )
+})
 
 function get_current_page(): number {
   return ('page' in route.query && /^\d+$/.test(String(route.query['page']))) ? Number(route.query['page']): 1;
@@ -187,7 +197,7 @@ onMounted(async () => {
         <div class="region-sidebar">
           <div class="cudl-results sidebar-results-list">
             <facet-block
-              v-for="facet in implementation.desired_facets"
+              v-for="facet in visible_facets"
               :desired_facet="facet"
               :facets="facets"
               :facet_key="implementation.facet_key"

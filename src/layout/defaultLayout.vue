@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import SearchBar from '@/components/SearchBar.vue'
 import { _get_first_value } from '@/lib/utils'
+import { show_homepage, show_works, show_people, show_places } from '@/featureFlags'
 
 const route = useRoute()
 
@@ -10,7 +11,7 @@ const route = useRoute()
 // /search nav links derive their own active state from the type filter.
 const current_type = computed<string | null>(() => _get_first_value(route.query.type ?? null))
 
-function nav_class(type: string): string {
+function nav_class(type: string | null): string {
   return route.path === '/search' && current_type.value === type ? 'campl-selected' : ''
 }
 </script>
@@ -38,11 +39,14 @@ function nav_class(type: string): string {
     <div class="campl-wrap clearfix campl-local-navigation" id="local-nav"><p class="campl-closed campl-menu-btn" id="menu-btn"><a href="#"><span>Menu</span> <span class="campl-menu-btn-arrow"></span></a></p>
       <div class="campl-local-navigation-container">
         <ul class="campl-unstyled-list campl-current">
-          <li class="campl-top"><router-link to="/" :class="route.path === '/' ? 'campl-selected' : ''">Home</router-link></li>
-          <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'manuscript' }}" :class="nav_class('manuscript')">Manuscripts</router-link></li>
-          <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'work' }}" :class="nav_class('work')">Works</router-link></li>
-          <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'person' }}" :class="nav_class('person')">People</router-link></li>
-          <li class="campl-top"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'place' }}" :class="nav_class('place')">Places</router-link></li>
+          <li class="campl-top">
+            <router-link v-if="show_homepage" to="/" :class="route.path === '/' ? 'campl-selected' : ''">Home</router-link>
+            <router-link v-else :to="{ path: 'search', query: { sort: 'title' }}" :class="nav_class(null)">Home</router-link>
+          </li>
+          <li class="campl-top" v-if="show_homepage"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'manuscript' }}" :class="nav_class('manuscript')">Manuscripts</router-link></li>
+          <li class="campl-top" v-if="show_works"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'work' }}" :class="nav_class('work')">Works</router-link></li>
+          <li class="campl-top" v-if="show_people"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'person' }}" :class="nav_class('person')">People</router-link></li>
+          <li class="campl-top" v-if="show_places"><router-link :to="{ path: 'search', query: { sort: 'title', type: 'place' }}" :class="nav_class('place')">Places</router-link></li>
           <li class="campl-top"><router-link to="/about" active-class="campl-selected">About</router-link></li>
         </ul>
       </div>
