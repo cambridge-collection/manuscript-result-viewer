@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "VITE_SUPPRESS_COLLECTION_PANELS=true vite",
+    "pressg": "node scripts/check-api-url.mjs",
     "ssg": "npx vite-ssg build",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
