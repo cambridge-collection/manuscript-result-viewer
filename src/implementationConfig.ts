@@ -1,7 +1,7 @@
 /* Define implementation settings */
 
 // Prod: https://search.medieval.lib.cam.ac.uk
-const api_url: string = "http://localhost"
+const api_url: string = "https://search.medieval.lib.cam.ac.uk"
 
 // Specify facets to be shown in the sidebar, displayed in array order.
 // wk_subjects_sm and roles_sm only return counts once the index/API expose
