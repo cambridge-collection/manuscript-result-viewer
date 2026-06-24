@@ -61,11 +61,11 @@ const show_snippets = ref(false)
             <li
               :class="
                 'snippet count' +
-                (index + 1) +
+                (Number(index) + 1) +
                 ' ' +
-                (show_snippets || index <= 2)
+                (show_snippets || Number(index) <= 2)
               "
-              v-show="index <= 2 || show_snippets"
+              v-show="Number(index) <= 2 || show_snippets"
               v-for="(snippet, index) in item.highlighting"
               v-html="
                 '&#x02026;' +
